@@ -705,7 +705,7 @@ namespace VstsSyncMigrator.Engine
 
             string[] ignoredFields = { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
                 "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                "Microsoft.VSTS.Common.BacklogPriority"
+                "Microsoft.VSTS.Common.BacklogPriority","Microsoft.VSTS.Common.ActivatedDate","System.Rev"
             };
 
             var sourceProject = Engine.Source.Config.AsTeamProjectConfig().Project;
@@ -744,15 +744,15 @@ namespace VstsSyncMigrator.Engine
                                 vt = vt.Replace(targetProject, sourceProject);
                             }
 
-                            if ((f.Key == "System.Rev" || f.Key == "System.History") && !_config.ReplayRevisions)
+                            if ((f.Key == "System.History") && !_config.ReplayRevisions)
                             {
-                                // ignore revision & history differences if ReplyRevisions is OFF
+                                // history differences if ReplyRevisions is OFF
                                 continue;
                             }
 
                             var matching = FuzzySharp.Fuzz.Ratio(vs, vt);
 
-                            if (matching < 97)
+                            if (matching < 95)
                             {
 
                                 if (f.Key == "Exact.EpicEffort" && matching > 50) continue; // ignore decimal point changes in Effort
