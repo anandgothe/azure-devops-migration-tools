@@ -538,11 +538,12 @@ namespace VstsSyncMigrator.Engine
 
             var description = new StringBuilder();
             description.Append(oldWorkItem.Description);
-            //if (destType == "Feature")
-            //{
-            //    description.Append(oldWorkItem.Fields["Exact.EOL.UserStory"].Value.ToString() + oldWorkItem.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value.ToString());
-            //    oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value = oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value.ToString() + oldWorkItem.Fields["Exact.EOL.HowToDemo"].Value.ToString();
-            //}
+            if (destType == "Feature")
+            {
+                description.Append(oldWorkItem.Fields["Exact.EOL.UserStory"].Value.ToString() +  oldWorkItem.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value.ToString());
+                oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value = oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value.ToString() + oldWorkItem.Fields["Exact.EOL.HowToDemo"].Value.ToString();
+            }
+
             newWorkItem.Description = description.ToString();
             fieldMappingTimer.Stop();
         }
@@ -722,6 +723,16 @@ namespace VstsSyncMigrator.Engine
                     // fields that can be ignored for this WI Type
                     if (f.Key == "Microsoft.VSTS.CMMI.RequirementType" || f.Key == "Exact.ProjectId" || f.Key == "Microsoft.VSTS.Common.BacklogPriority")
                     {
+                        continue;
+                    }
+                }
+
+                if (type == "Feature")
+                {
+                    // fields that can be ignored for this WI Type
+                    if (f.Key == "Microsoft.VSTS.Common.DescriptionHtml")
+                    { 
+                        if(tw.Fields["System.Description"].Value.ToString() == sw.Fields["Exact.EOL.UserStory"].Value.ToString() + sw.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value.ToString())
                         continue;
                     }
                 }
