@@ -211,6 +211,82 @@
       "sourceField": "Exact.PlannedGADate",
       "targetField": "Custom.PlannedGADate",
       "defaultValue": null
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "New",
+      "valueMapping": {
+        "Done": "Done",
+        "Removed": "Removed",
+        "New": "New",
+        "In Progress": "In Progress",
+        "Released": "Released",
+        "Development Estimated": "In Progress",
+        "Story created": "Story Created"
+      }
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.SynergyID",
+      "targetField": "Custom.SynergyRequestID",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.Common.ReleaseDate",
+      "targetField": "Microsoft.VSTS.Scheduling.TargetDate",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.GlobalPriority",
+      "targetField": "Microsoft.VSTS.Common.BacklogPriority",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.ADC.EOLProjectCode",
+      "targetField": "Custom.ExactOnlineProject",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.EstimatedDevDays",
+      "targetField": "Custom.EstimatedDevDays",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.ForecastedDate",
+      "targetField": "Custom.ForecastedDate",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.DeliveredDate",
+      "targetField": "Custom.ForecastedDate",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.CommittedFeature",
+      "targetField": "Custom.CommittedFeature",
+      "defaultValue": null,
+      "valueMapping": {
+        "Yes": "True",
+        "No": "False"
+      }
     }
   ],
   "Processors": [
@@ -227,7 +303,7 @@
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Test Case') AND [System.ID] = '62515'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Epic') AND [System.ChangedDate] >= '2020-1-1'",
       //"WIQLQueryBit": "AND [System.ChangedDate] < '2017-01-01' and ",
-      "WIQLQueryBit": "AND [System.ID] IN ('267630','14865')",
+      "WIQLQueryBit": "AND [System.ID] IN ('267255')",
       //"WIQLQueryBit": "AND [System.ID] in ('297326','297312','297311')",
       //"WIQLQueryBit": "AND [System.ID] IN ('285343','295453','295464','295465','295466','295520','295530','295531','295545','295594','295615')",
       "WIQLOrderBit": "[System.ID]",
