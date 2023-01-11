@@ -528,6 +528,12 @@ namespace VstsSyncMigrator.Engine
                             newWorkItem.Fields["Custom.Technicalrisk"].Value = "3 - Low";
                     }
                     break;
+                case "Product Backlog Item":
+                    //if (oldWorkItem.Fields["Exact.ADC.RiskAnalysis"].Value != null)
+                    //{
+                    //    newWorkItem.Fields["Exact.ADC.RiskAnalysis"].Value = oldWorkItem.Fields["Exact.ADC.RiskAnalysis"].Value.ToString() == "yes" ? "Medium Medium" : "Low Low";
+                    //}
+                        break;
             }
 
             if (newWorkItem.Fields.Contains("Microsoft.VSTS.Common.BacklogPriority")
@@ -712,6 +718,14 @@ namespace VstsSyncMigrator.Engine
 
             string[] ignoredFields = new string[] { };
 
+            if (type == "Bug")
+            {
+                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+                "Exact.DateOfAvailability","Exact.FreeText1","Exact.FreeText2","Exact.FreeText3","Exact.StartDate","Microsoft.VSTS.Test.TestPath","","Microsoft.VSTS.Test.TestId","Microsoft.VSTS.Test.TestName","Exact.ADC.Backlog",
+                "Microsoft.VSTS.CMMI.ProposedFix","Microsoft.VSTS.CMMI.StepsToReproduce","Microsoft.VSTS.CMMI.Blocked","Exact.ADC.RiskAnalysis","Microsoft.VSTS.CMMI.HowFound","Microsoft.VSTS.Scheduling.BaselineWork"};
+            }
+
             if (type == "Epic")
             {
                 ignoredFields = new [] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
@@ -725,6 +739,13 @@ namespace VstsSyncMigrator.Engine
                 "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
                     "Exact.ReleaseIn","Exact.EffortSize","Exact.ProjectName","Exact.SupportNotification","Exact.NoPBIChanged","Microsoft.VSTS.Common.DescriptionHtml","Exact.EOL.UserStory","Exact.EOL.UserStory","Exact.EOL.HowToDemo"
                     ,"Exact.EOL.Theme","Exact.ActivityType","Exact.Roadmap"
+                };
+            }
+            if (type == "Product Backlog Item")
+            {
+                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+                "System.Description","Exact.ActivityType","Exact.ADC.AlphaPreview","Exact.ADC.STBRemark","Exact.ADC.AlphaTestingCovered","Exact.ADC.STBTestingCovered","Exact.ADC.AlphaTestingRemark"
                 };
             }
 
