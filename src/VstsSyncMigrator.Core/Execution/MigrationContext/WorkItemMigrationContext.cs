@@ -541,7 +541,7 @@ namespace VstsSyncMigrator.Engine
             if (destType == "Feature")
             {
                 description.Append(oldWorkItem.Fields["Exact.EOL.UserStory"].Value.ToString() +  oldWorkItem.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value.ToString());
-                oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value = oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value.ToString() + oldWorkItem.Fields["Exact.EOL.HowToDemo"].Value.ToString();
+                newWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value = oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value.ToString() + oldWorkItem.Fields["Exact.EOL.HowToDemo"].Value.ToString();
             }
 
             newWorkItem.Description = description.ToString();
@@ -704,81 +704,96 @@ namespace VstsSyncMigrator.Engine
             Log.LogInformation($"COMPARING WI ID (s) {sw.Id} ---------> {tw.Id}");
             //bool diff = false;
 
-            string[] ignoredFields = { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
-                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                "Microsoft.VSTS.Common.BacklogPriority","Microsoft.VSTS.Common.ActivatedDate","System.Rev"
-            };
-
+           
             var sourceProject = Engine.Source.Config.AsTeamProjectConfig().Project;
             var targetProject = Engine.Target.Config.AsTeamProjectConfig().Project;
 
             var type = sw.Fields["System.WorkItemType"].Value.ToString();
 
+            string[] ignoredFields = new string[] { };
+
+            if (type == "Epic")
+            {
+                ignoredFields = new [] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+                "Microsoft.VSTS.Common.BacklogPriority","Microsoft.VSTS.Common.ActivatedDate","System.Rev","Microsoft.VSTS.CMMI.RequirementType" ,"Exact.ProjectId"};
+            }
+
+            if (type == "Feature")
+            {
+                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+                    "Exact.ReleaseIn","Exact.EffortSize","Exact.ProjectName","Exact.SupportNotification","Exact.NoPBIChanged","Microsoft.VSTS.Common.DescriptionHtml","Exact.EOL.UserStory","Exact.EOL.UserStory","Exact.EOL.HowToDemo"
+                    ,"Exact.EOL.Theme","Exact.ActivityType","Exact.Roadmap"
+                };
+            }
+
             foreach (var f in sw.Fields)
             {
-                if (ignoredFields.Contains(f.Key)) continue;
-
-                if (type == "Epic")
+                try
                 {
-                    // fields that can be ignored for this WI Type
-                    if (f.Key == "Microsoft.VSTS.CMMI.RequirementType" || f.Key == "Exact.ProjectId" || f.Key == "Microsoft.VSTS.Common.BacklogPriority")
+
+                    if (ignoredFields.Contains(f.Key)) continue;
+
+                    if (type == "Feature")
                     {
-                        continue;
-                    }
-                }
-
-                if (type == "Feature")
-                {
-                    // fields that can be ignored for this WI Type
-                    if (f.Key == "Microsoft.VSTS.Common.DescriptionHtml")
-                    { 
-                        if(tw.Fields["System.Description"].Value.ToString() == sw.Fields["Exact.EOL.UserStory"].Value.ToString() + sw.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value.ToString())
-                        continue;
-                    }
-                }
-
-                var vs = f.Value.Value?.ToString();
-
-                var targetFieldName = GetMapping(f.Key, type);
-
-                if (tw.Fields.ContainsKey(targetFieldName))
-                {
-                    var vt = tw.Fields[targetFieldName].Value?.ToString();
-
-                    if (vs != vt)
-                    {
-                        if (vs != null && vt != null)
+                        // fields that can be ignored for this WI Type
+                        if (f.Key == "Microsoft.VSTS.Common.Description")
                         {
-
-                            if (new[] { "System.AreaPath", "System.TeamProject", "System.IterationPath", "System.NodeName" }.Contains(f.Key))
-                            {
-                                vt = vt.Replace(targetProject, sourceProject);
-                            }
-
-                            if ((f.Key == "System.History") && !_config.ReplayRevisions)
-                            {
-                                // history differences if ReplyRevisions is OFF
+                            if (tw.Fields["System.Description"].Value.ToString() == sw.Fields["Exact.EOL.UserStory"].Value.ToString() + sw.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value.ToString())
                                 continue;
-                            }
+                        }
 
-                            var matching = FuzzySharp.Fuzz.Ratio(vs, vt);
 
-                            if (matching < 95)
+                    }
+
+                    var vs = f.Value.Value?.ToString();
+
+                    var targetFieldName = GetMapping(f.Key, type);
+
+                    if (tw.Fields.ContainsKey(targetFieldName))
+                    {
+                        var vt = tw.Fields[targetFieldName].Value?.ToString();
+
+                        if (vs != vt)
+                        {
+                            if (vs != null && vt != null)
                             {
 
-                                if (f.Key == "Exact.EpicEffort" && matching > 50) continue; // ignore decimal point changes in Effort
-                                ReportCompareError($"VALUE MISMATCH FOR {f.Key} | {matching}% | {vs ?? string.Empty} --------------------------------------> {vt ?? string.Empty}", sw.Id, tw.Id);
+                                if (new[] { "System.AreaPath", "System.TeamProject", "System.IterationPath", "System.NodeName" }.Contains(f.Key))
+                                {
+                                    vt = vt.Replace(targetProject, sourceProject);
+                                }
+
+                                if ((f.Key == "System.History") && !_config.ReplayRevisions)
+                                {
+                                    // history differences if ReplyRevisions is OFF
+                                    continue;
+                                }
+
+                                var matching = FuzzySharp.Fuzz.Ratio(vs, vt);
+
+                                if (matching < 95)
+                                {
+
+                                    if (f.Key == "Exact.EpicEffort" && matching > 50) continue; // ignore decimal point changes in Effort
+                                    ReportCompareError($"VALUE MISMATCH FOR {f.Key} | {matching}% | {vs ?? string.Empty} --------------------------------------> {vt ?? string.Empty}", sw.Id, tw.Id);
+                                }
+                            }
+                            else
+                            {
+                                ReportCompareError($"VALUE MISMATCH FOR {f.Key} | {vs ?? string.Empty} ---------------------------------> {vt ?? string.Empty}", sw.Id, tw.Id);
                             }
                         }
-                        else
-                        {
-                            ReportCompareError($"VALUE MISMATCH FOR {f.Key} | {vs ?? string.Empty} ---------------------------------> {vt ?? string.Empty}", sw.Id, tw.Id);
-                        }
+                    }
+                    else
+                    {
+                        ReportCompareError($"FIELD NOT FOUND ON TARGET " + f.Key + " -> " + targetFieldName, sw.Id, tw.Id);
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    ReportCompareError($"FIELD NOT FOUND ON TARGET " + f.Key + " -> " + targetFieldName, sw.Id, tw.Id);
+                    Log.LogError(ex, "Error when comparing " + f.Key);
                 }
             }
 
@@ -820,8 +835,25 @@ namespace VstsSyncMigrator.Engine
 
                 if (m1 != null)
                 {
-                    var m2 = (FieldToFieldMap)m1;
-                    return m2.Config.targetField;
+                    if (m1 is FieldToFieldMap)
+                    {
+                        var m2 = m1 as FieldToFieldMap;
+
+                        if (m2 != null)
+                        {
+                            return m2.Config.targetField;
+                        }
+                    }
+
+                    if (m1 is FieldValueMap)
+                    {
+                        var m2 = m1 as FieldValueMap;
+
+                        if (m2 != null)
+                        {
+                            return m2.Config.targetField;
+                        }
+                    }
                 }
 
             }
