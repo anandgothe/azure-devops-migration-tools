@@ -284,13 +284,20 @@
       "targetField": "Custom.ForecastedDate",
       "defaultValue": null
     },
-    //{
-    //  "$type": "FieldtoFieldMapConfig",
-    //  "WorkItemTypeName": "Feature",
-    //  "sourceField": "Exact.DeliveredDate",
-    //  "targetField": "Custom.ClosedDate",
-    //  "defaultValue": null
-    //},
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.DeliveredDate",
+      "targetField": "Microsoft.VSTS.Common.ClosedDate",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.ADC.Backlog",
+      "targetField": "Custom.Backlog",
+      "defaultValue": null
+    },
     {
       "$type": "FieldValueMapConfig",
       "WorkItemTypeName": "Feature",
@@ -319,15 +326,37 @@
     {
       "$type": "FieldtoFieldMapConfig",
       "WorkItemTypeName": "Product Backlog Item",
-      "sourceField": "Exact.SynergyID",
-      "targetField": "Custom.SynergyRequestID",
+      "sourceField": "Exact.EOL.UserStory",
+      "targetField": "Custom.UserStory",
       "defaultValue": null
     },
     {
       "$type": "FieldtoFieldMapConfig",
       "WorkItemTypeName": "Product Backlog Item",
-      "sourceField": "Exact.EOL.UserStory",
-      "targetField": "Custom.SynergyRequestID",
+      "sourceField": "Exact.EOL.HowToDemo",
+      "targetField": "Custom.HowToDemo",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Task",
+      "sourceField": "System.Reason",
+      "targetField": "System.Reason",
+      "defaultValue": null,
+      "valueMapping": {
+        "New": "New task",
+        "Task Assigned": "Work started",
+        "Task is completed and done": "Work finished",
+        "Task not completed and done": "Additional work found",
+        "Task is removed": "Removed from the backlog",
+        "Task required more study and analysis": "Reconsidering the task"
+      }
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Task",
+      "sourceField": "Exact.issuedescription",
+      "targetField": "System.Description",
       "defaultValue": null
     }
   ],
@@ -345,7 +374,7 @@
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Test Case') AND [System.ID] = '62515'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Epic') AND [System.ChangedDate] >= '2020-1-1'",
       //"WIQLQueryBit": "AND [System.ChangedDate] < '2017-01-01' and ",
-      "WIQLQueryBit": "AND [System.ID] IN ('254312')",
+      "WIQLQueryBit": "AND [System.ID] IN ('15595')",
       //"WIQLQueryBit": "AND [System.ID] in ('297326','297312','297311')",
       //"WIQLQueryBit": "AND [System.ID] IN ('285343','295453','295464','295465','295466','295520','295530','295531','295545','295594','295615')",
       "WIQLOrderBit": "[System.ID]",

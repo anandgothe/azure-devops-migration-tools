@@ -745,10 +745,18 @@ namespace VstsSyncMigrator.Engine
             {
                 ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
                 "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                "System.Description","Exact.ActivityType","Exact.ADC.AlphaPreview","Exact.ADC.STBRemark","Exact.ADC.AlphaTestingCovered","Exact.ADC.STBTestingCovered","Exact.ADC.AlphaTestingRemark"
+                "System.Description","Exact.ActivityType","Exact.ADC.AlphaPreview","Exact.ADC.STBRemark","Exact.ADC.AlphaTestingCovered","Exact.ADC.STBTestingCovered","Exact.ADC.AlphaTestingRemark","Exact.ADC.Tag"
                 };
             }
 
+            if (type == "Task")
+            {
+                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+                "Microsoft.VSTS.CMMI.ImpactOnTechnicalPublications","Microsoft.VSTS.CMMI.ImpactOnDevelopment","Microsoft.VSTS.CMMI.ImpactOnTest","Microsoft.VSTS.CMMI.ImpactOnUserExperience","Microsoft.VSTS.CMMI.ImpactOnArchitecture",
+                "Microsoft.VSTS.Scheduling.BaselineWork"
+                };
+            }
             foreach (var f in sw.Fields)
             {
                 try
