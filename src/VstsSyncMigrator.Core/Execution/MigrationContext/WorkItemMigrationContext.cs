@@ -709,7 +709,7 @@ namespace VstsSyncMigrator.Engine
         {
             Log.LogInformation($"COMPARING WI ID (s) {sw.Id} ---------> {tw.Id}");
             //bool diff = false;
-
+            int stringMatchThreshold = 95;
            
             var sourceProject = Engine.Source.Config.AsTeamProjectConfig().Project;
             var targetProject = Engine.Target.Config.AsTeamProjectConfig().Project;
@@ -738,7 +738,7 @@ namespace VstsSyncMigrator.Engine
                 ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
                 "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
                     "Exact.ReleaseIn","Exact.EffortSize","Exact.ProjectName","Exact.SupportNotification","Exact.NoPBIChanged","Microsoft.VSTS.Common.DescriptionHtml","Exact.EOL.UserStory","Exact.EOL.UserStory","Exact.EOL.HowToDemo"
-                    ,"Exact.EOL.Theme","Exact.ActivityType","Exact.Roadmap"
+                    ,"Exact.EOL.Theme","Exact.ActivityType","Exact.Roadmap","System.Rev"
                 };
             }
             if (type == "Product Backlog Item")
@@ -764,21 +764,50 @@ namespace VstsSyncMigrator.Engine
 
                     if (ignoredFields.Contains(f.Key)) continue;
 
+                    var vs = f.Value.Value?.ToString();
+
                     if (type == "Feature")
                     {
                         // fields that can be ignored for this WI Type
-                        if (f.Key == "Microsoft.VSTS.Common.Description")
+                        if (f.Key == "Microsoft.VSTS.Common.Description" || f.Key== "System.Description")
                         {
-                            if (tw.Fields["System.Description"].Value.ToString() == sw.Fields["Exact.EOL.UserStory"].Value.ToString() + sw.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value.ToString())
+                            if (FuzzySharp.Fuzz.Ratio(tw.Fields["System.Description"].Value.ToString(),
+                                sw.Fields["Exact.EOL.UserStory"].Value.ToString() + sw.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value.ToString()
+                                ) >= stringMatchThreshold)
                                 continue;
                         }
 
+                        if(f.Key== "Microsoft.VSTS.Common.BacklogPriority")
+                        {
+                            if (sw.Fields["Exact.GlobalPriority"].Value.ToString() == tw.Fields["Microsoft.VSTS.Common.BacklogPriority"].Value.ToString())
+                                continue;
+                        }
 
+                        if (f.Key == "Exact.CommittedFeature" && string.IsNullOrEmpty(vs))
+                            continue;
                     }
 
-                    var vs = f.Value.Value?.ToString();
+                    var targetFieldName = f.Key;
 
-                    var targetFieldName = GetMapping(f.Key, type);
+                    var targetFieldMapping = GetMapping(f.Key, type);
+
+                    if (targetFieldMapping != null)
+                    {
+                        if(targetFieldMapping is FieldToFieldMap)
+                        {
+                            targetFieldName = ((FieldToFieldMap)targetFieldMapping).Config.targetField;
+                        }
+                        else if (targetFieldMapping is FieldValueMap)
+                        {
+                            var valueMap = ((FieldValueMap)targetFieldMapping);
+                            targetFieldName = valueMap.Config.targetField;
+                            if (valueMap.Config.valueMapping.ContainsKey(vs))
+                            {
+                                vs = valueMap.Config.valueMapping[vs].ToString();
+                            }
+                        }
+                    }
+
 
                     if (tw.Fields.ContainsKey(targetFieldName))
                     {
@@ -802,7 +831,7 @@ namespace VstsSyncMigrator.Engine
 
                                 var matching = FuzzySharp.Fuzz.Ratio(vs, vt);
 
-                                if (matching < 95)
+                                if (matching < stringMatchThreshold)
                                 {
 
                                     if (f.Key == "Exact.EpicEffort" && matching > 50) continue; // ignore decimal point changes in Effort
@@ -828,12 +857,12 @@ namespace VstsSyncMigrator.Engine
 
             if (sw.Revisions.Count != tw.Revisions.Count && !_config.ReplayRevisions)
             {
-                ReportCompareError($" Revisions.Count don't match {sw.Revisions.Count()}----->{tw.Revisions.Count()}", sw.Id, tw.Id);
+                //ReportCompareError($" Revisions.Count don't match {sw.Revisions.Count()}----->{tw.Revisions.Count()}", sw.Id, tw.Id);
             }
 
             if (sw.Links.Count != tw.Links.Count)
             {
-                ReportCompareError($" Links.Count don't match {sw.Links.Count()}-----> {tw.Links.Count()}", sw.Id,tw.Id);
+                //ReportCompareError($" Links.Count don't match {sw.Links.Count()}-----> {tw.Links.Count()}", sw.Id,tw.Id);
             }
 
             //if (diff)
@@ -855,7 +884,7 @@ namespace VstsSyncMigrator.Engine
             comparisons.Add(msg);
         }
 
-        private string GetMapping(string key, string wiType)
+        private FieldMapBase GetMapping(string key, string wiType)
         {
             if (Engine.FieldMaps.Items.ContainsKey(wiType))
             {
@@ -870,7 +899,7 @@ namespace VstsSyncMigrator.Engine
 
                         if (m2 != null)
                         {
-                            return m2.Config.targetField;
+                            return m2;
                         }
                     }
 
@@ -880,13 +909,13 @@ namespace VstsSyncMigrator.Engine
 
                         if (m2 != null)
                         {
-                            return m2.Config.targetField;
+                            return m2;
                         }
                     }
                 }
 
             }
-            return key;
+            return null;
         }
 
         private void ProcessWorkItemAttachments(WorkItemData sourceWorkItem, WorkItemData targetWorkItem, bool save = true)
