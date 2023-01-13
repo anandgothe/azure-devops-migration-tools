@@ -796,6 +796,9 @@ namespace VstsSyncMigrator.Engine
                             vs = sw.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString() + sw.Fields["Exact.EOL.HowToDemo"].Value?.ToString();
                             vt = tw.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString();
                             matchingLimit = 50;
+
+                            if (vs == "<p><br></p>")
+                                vs = "";
                         }
 
                         if (f.Key== "Microsoft.VSTS.Common.BacklogPriority")
@@ -867,14 +870,14 @@ namespace VstsSyncMigrator.Engine
                 }
             }
 
-            if (sw.Revisions.Count != tw.Revisions.Count && !_config.ReplayRevisions)
+            if (sw.Revisions.Count != tw.Revisions.Count && _config.ReplayRevisions)
             {
-                //ReportCompareError($" Revisions.Count don't match {sw.Revisions.Count()}----->{tw.Revisions.Count()}", sw.Id, tw.Id);
+                ReportCompareError($" Revisions.Count don't match {sw.Revisions.Count()}----->{tw.Revisions.Count()}", sw.Id, tw.Id);
             }
 
-            if (sw.Links.Count != tw.Links.Count)
+            if (sw.Links.Count != tw.Links.Count && _config.ReplayRevisions)
             {
-                //ReportCompareError($" Links.Count don't match {sw.Links.Count()}-----> {tw.Links.Count()}", sw.Id,tw.Id);
+                ReportCompareError($" Links.Count don't match {sw.Links.Count()}-----> {tw.Links.Count()}", sw.Id,tw.Id);
             }
 
             //if (diff)
