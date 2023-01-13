@@ -335,6 +335,11 @@ namespace VstsSyncMigrator.Engine
             {
                 Log.LogInformation(c);
             }
+
+            if (!comparisons.Any())
+            {
+                Log.LogInformation("+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++");
+            }
         }
 
         internal void sendemail(string projName, string who)
@@ -546,8 +551,8 @@ namespace VstsSyncMigrator.Engine
             description.Append(oldWorkItem.Description);
             if (destType == "Feature")
             {
-                description.Append(oldWorkItem.Fields["Exact.EOL.UserStory"].Value.ToString() +  oldWorkItem.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value.ToString());
-                newWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value = oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value.ToString() + oldWorkItem.Fields["Exact.EOL.HowToDemo"].Value.ToString();
+                description.Append(oldWorkItem.Fields["Exact.EOL.UserStory"].Value?.ToString() +  oldWorkItem.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value?.ToString());
+                newWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value = oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString() + oldWorkItem.Fields["Exact.EOL.HowToDemo"].Value?.ToString();
             }
 
             newWorkItem.Description = description.ToString();
@@ -709,7 +714,6 @@ namespace VstsSyncMigrator.Engine
         {
             Log.LogInformation($"COMPARING WI ID (s) {sw.Id} ---------> {tw.Id}");
             //bool diff = false;
-            int stringMatchThreshold = 95;
            
             var sourceProject = Engine.Source.Config.AsTeamProjectConfig().Project;
             var targetProject = Engine.Target.Config.AsTeamProjectConfig().Project;
@@ -761,25 +765,42 @@ namespace VstsSyncMigrator.Engine
             {
                 try
                 {
-
                     if (ignoredFields.Contains(f.Key)) continue;
 
+                    if ((f.Key == "System.History") && !_config.ReplayRevisions)
+                    {
+                        // history differences if ReplyRevisions is OFF
+                        continue;
+                    }
+
                     var vs = f.Value.Value?.ToString();
+                    string vt = null;
+                    int matchingLimit = 90;
+
+                    if (f.Key == "Exact.EpicEffort")
+                    { // ignore decimal point changes in Effort
+                        matchingLimit = 50;
+                    }
 
                     if (type == "Feature")
                     {
-                        // fields that can be ignored for this WI Type
-                        if (f.Key == "Microsoft.VSTS.Common.Description" || f.Key== "System.Description")
+                        if (f.Key == "Microsoft.VSTS.Common.Description" || f.Key == "System.Description")
                         {
-                            if (FuzzySharp.Fuzz.Ratio(tw.Fields["System.Description"].Value.ToString(),
-                                sw.Fields["Exact.EOL.UserStory"].Value.ToString() + sw.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value.ToString()
-                                ) >= stringMatchThreshold)
-                                continue;
+                            vs = sw.Fields["Exact.EOL.UserStory"].Value?.ToString() + sw.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value?.ToString();
+                            vt = tw.Fields["System.Description"].Value?.ToString();
+                            matchingLimit = 50;
                         }
 
-                        if(f.Key== "Microsoft.VSTS.Common.BacklogPriority")
+                        if (f.Key == "Microsoft.VSTS.Common.AcceptanceCriteria")
                         {
-                            if (sw.Fields["Exact.GlobalPriority"].Value.ToString() == tw.Fields["Microsoft.VSTS.Common.BacklogPriority"].Value.ToString())
+                            vs = sw.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString() + sw.Fields["Exact.EOL.HowToDemo"].Value?.ToString();
+                            vt = tw.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString();
+                            matchingLimit = 50;
+                        }
+
+                        if (f.Key== "Microsoft.VSTS.Common.BacklogPriority")
+                        {
+                            if (sw.Fields["Exact.GlobalPriority"].Value?.ToString() == tw.Fields["Microsoft.VSTS.Common.BacklogPriority"].Value?.ToString())
                                 continue;
                         }
 
@@ -808,33 +829,24 @@ namespace VstsSyncMigrator.Engine
                         }
                     }
 
-
                     if (tw.Fields.ContainsKey(targetFieldName))
                     {
-                        var vt = tw.Fields[targetFieldName].Value?.ToString();
+                        if(vt==null)
+                         vt = tw.Fields[targetFieldName].Value?.ToString();
 
                         if (vs != vt)
                         {
                             if (vs != null && vt != null)
                             {
-
                                 if (new[] { "System.AreaPath", "System.TeamProject", "System.IterationPath", "System.NodeName" }.Contains(f.Key))
                                 {
                                     vt = vt.Replace(targetProject, sourceProject);
                                 }
 
-                                if ((f.Key == "System.History") && !_config.ReplayRevisions)
-                                {
-                                    // history differences if ReplyRevisions is OFF
-                                    continue;
-                                }
-
                                 var matching = FuzzySharp.Fuzz.Ratio(vs, vt);
 
-                                if (matching < stringMatchThreshold)
+                                if (matching < matchingLimit)
                                 {
-
-                                    if (f.Key == "Exact.EpicEffort" && matching > 50) continue; // ignore decimal point changes in Effort
                                     ReportCompareError($"VALUE MISMATCH FOR {f.Key} | {matching}% | {vs ?? string.Empty} --------------------------------------> {vt ?? string.Empty}", sw.Id, tw.Id);
                                 }
                             }
