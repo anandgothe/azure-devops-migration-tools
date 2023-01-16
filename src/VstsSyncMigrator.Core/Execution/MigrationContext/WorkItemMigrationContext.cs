@@ -281,8 +281,7 @@ namespace VstsSyncMigrator.Engine
                 }
 
                 var TfsConfig = Engine.Target.Config.AsTeamProjectConfig();
-                var creds = new Microsoft.VisualStudio.Services.Common.VssBasicCredential(string.Empty, TfsConfig.GetPatToken());
-                var connection = new Microsoft.VisualStudio.Services.WebApi.VssConnection(Engine.Target.Config.AsTeamProjectConfig().Collection, creds);
+                var connection = new Microsoft.VisualStudio.Services.WebApi.VssConnection(Engine.Target.Config.AsTeamProjectConfig().Collection, Engine.Target.Credentials);
                 var targetGuid = ((Project)Engine.Target.WorkItems.GetProject().internalObject).Guid;
                 using (var witClient = connection.GetClient<Microsoft.TeamFoundation.WorkItemTracking.WebApi.WorkItemTrackingHttpClient>())
                 {

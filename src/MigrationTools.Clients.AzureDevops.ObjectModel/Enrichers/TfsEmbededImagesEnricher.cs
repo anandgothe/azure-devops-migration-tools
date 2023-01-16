@@ -134,26 +134,55 @@ namespace MigrationTools.Enrichers
 
             Log.LogDebug("EmbededImagesRepairEnricher: field '{fieldName}' has match: {matchValue}", sourceFieldName, System.Net.WebUtility.HtmlDecode(matchedSourceUri));
             string fullImageFilePath = Path.GetTempPath() + newFileNameMatch.Value;
-
+          
             try
             {
-                using (var httpClient = new HttpClient(_httpClientHandler, false))
+                if (matchedSourceUri.Contains("tfs.ap.exa"))
                 {
-                    if (!string.IsNullOrEmpty(sourcePersonalAccessToken))
+                    //TFS
+                    var TfsConfig = Engine.Source.Config.AsTeamProjectConfig();
+                    var connection = new Microsoft.VisualStudio.Services.WebApi.VssConnection(Engine.Source.Config.AsTeamProjectConfig().Collection, Engine.Source.Credentials);
+                    var targetGuid = ((Project)Engine.Source.WorkItems.GetProject().internalObject).Guid;
+                    var witClient = connection.GetClient<Microsoft.TeamFoundation.WorkItemTracking.WebApi.WorkItemTrackingHttpClient>();
+
+                    var match = Regex.Match(matchedSourceUri, "FileNameGuid=([0-9a-fA-F-]*)");
+
+                    if (!match.Success)
                     {
-                        httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "", sourcePersonalAccessToken))));
+                        throw new ApplicationException("Could not find FileNameGuid in " + matchedSourceUri);
                     }
-                    var result = DownloadFile(httpClient, matchedSourceUri, fullImageFilePath);
-                    if (!result.IsSuccessStatusCode)
+
+                    var attachmentStream = witClient.GetAttachmentContentAsync(Guid.Parse(match.Groups[1].Value)).Result;
+
+                    using (attachmentStream)
                     {
-                        if (_ignore404Errors && result.StatusCode == HttpStatusCode.NotFound)
+                        using (var fileWriter = new FileStream(fullImageFilePath, FileMode.Create))
                         {
-                            Log.LogDebug("EmbededImagesRepairEnricher: Image {MatchValue} could not be found in WorkItem {WorkItemId}, Field {FieldName}", matchedSourceUri, targetWorkItem.Id, sourceFieldName);
-                            return null;
+                            attachmentStream.CopyTo(fileWriter);
                         }
-                        else
+                    }
+                }
+                else
+                {
+                    // AzDo
+                    using (var httpClient = new HttpClient(_httpClientHandler, false))
+                    {
+                        if (!string.IsNullOrEmpty(sourcePersonalAccessToken))
                         {
-                            result.EnsureSuccessStatusCode();
+                            httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(System.Text.ASCIIEncoding.ASCII.GetBytes(string.Format("{0}:{1}", "", sourcePersonalAccessToken))));
+                        }
+                        var result = DownloadFile(httpClient, matchedSourceUri, fullImageFilePath);
+                        if (!result.IsSuccessStatusCode)
+                        {
+                            if (_ignore404Errors && result.StatusCode == HttpStatusCode.NotFound)
+                            {
+                                Log.LogDebug("EmbededImagesRepairEnricher: Image {MatchValue} could not be found in WorkItem {WorkItemId}, Field {FieldName}", matchedSourceUri, targetWorkItem.Id, sourceFieldName);
+                                return null;
+                            }
+                            else
+                            {
+                                result.EnsureSuccessStatusCode();
+                            }
                         }
                     }
                 }
