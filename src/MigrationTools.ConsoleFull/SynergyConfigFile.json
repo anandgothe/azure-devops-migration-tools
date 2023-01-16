@@ -358,6 +358,27 @@
       "sourceField": "Exact.issuedescription",
       "targetField": "System.Description",
       "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Roadmap Initiative",
+      "sourceField": "Exact.Roadmap",
+      "targetField": "Custom.SynergyLever",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Roadmap Initiative",
+      "sourceField": "Exact.PSGProject",
+      "targetField": "Custom.SynergyProject",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Roadmap Initiative",
+      "sourceField": "Exact.InnovationCategory",
+      "targetField": "Custom.SynergyInnovationCategory",
+      "defaultValue": null
     }
   ],
   "Processors": [
