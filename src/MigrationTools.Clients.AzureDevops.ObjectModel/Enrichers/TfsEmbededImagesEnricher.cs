@@ -145,7 +145,12 @@ namespace MigrationTools.Enrichers
                     var targetGuid = ((Project)Engine.Source.WorkItems.GetProject().internalObject).Guid;
                     var witClient = connection.GetClient<Microsoft.TeamFoundation.WorkItemTracking.WebApi.WorkItemTrackingHttpClient>();
 
-                    var match = Regex.Match(matchedSourceUri, "FileNameGuid=([0-9a-fA-F-]*)");
+                    var match = Regex.Match(matchedSourceUri, "FileNameGuid=([0-9a-fA-F-]*)", RegexOptions.IgnoreCase);
+
+                    if (!match.Success)
+                    {
+                        match = Regex.Match(matchedSourceUri, "attachments/([0-9a-fA-F-]*)", RegexOptions.IgnoreCase);
+                    }
 
                     if (!match.Success)
                     {

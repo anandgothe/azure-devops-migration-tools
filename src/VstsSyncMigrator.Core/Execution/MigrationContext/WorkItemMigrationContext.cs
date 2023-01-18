@@ -550,7 +550,8 @@ namespace VstsSyncMigrator.Engine
             description.Append(oldWorkItem.Description);
             if (destType == "Feature")
             {
-                description.Append(oldWorkItem.Fields["Exact.EOL.UserStory"].Value?.ToString() +  oldWorkItem.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value?.ToString());
+                if (!string.IsNullOrEmpty(description.ToString())) description.Append("\n---\n");
+                description.Append(oldWorkItem.Fields["Exact.EOL.UserStory"].Value?.ToString() + "\n" + oldWorkItem.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value?.ToString());
                 newWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value = oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString() + oldWorkItem.Fields["Exact.EOL.HowToDemo"].Value?.ToString();
             }
 
@@ -740,7 +741,7 @@ namespace VstsSyncMigrator.Engine
             if (type == "Feature")
             {
                 ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
-                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
                     "Exact.ReleaseIn","Exact.EffortSize","Exact.ProjectName","Exact.SupportNotification","Exact.NoPBIChanged","Microsoft.VSTS.Common.DescriptionHtml","Exact.EOL.UserStory","Exact.EOL.UserStory","Exact.EOL.HowToDemo"
                     ,"Exact.EOL.Theme","Exact.ActivityType","Exact.Roadmap","System.Rev"
                 };
