@@ -1,0 +1,37 @@
+{
+  "Endpoints": {
+    "TfsEndpoints": [
+      {
+        "Name": "MySource",
+        "Organisation": "https://tfs.ap.exactsoftware.com:8088/tfs/APCollection/",
+        "Project": "SYN_MAIN-Codebase",
+        "AuthenticationMode": "AccessToken",
+        "AccessToken": "zikayekda72f5nu7z2egk5w6lexnejvdp2wm7fc2iaq4cae4shiq"
+      },
+      {
+        "Name": "MyTarget",
+        "Organisation": "https://dev.azure.com/ExactGroup/",
+        "Project": "TestMigration-DevOn",
+        "AuthenticationMode": "AccessToken",
+        "AccessToken": "nvcdbbz6yuxwsc5arc4ghuyznaiwlvsw4e35y32pft7ncxg3gksq"
+      }
+    ]
+  },
+  "Processors": [
+    {
+      "$type": "TfsSharedQueryProcessorOptions",
+      "Enabled": true,
+      "PrefixProjectToNodes": false,
+      "SharedFolderName": "Shared Queries",
+      "SourceToTargetFieldMappings": null,
+      "ProcessorEnrichers": null,
+      "SourceName": "MySource",
+      "TargetName": "MyTarget"
+    }
+  ],
+  "Version": "12.0",
+  "workaroundForQuerySOAPBugEnabled": false,
+  "WorkItemTypeDefinition": {
+    "sourceWorkItemTypeName": "targetWorkItemTypeName"
+  }
+}
