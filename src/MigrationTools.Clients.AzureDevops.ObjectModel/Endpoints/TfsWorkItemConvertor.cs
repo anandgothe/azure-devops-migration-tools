@@ -52,7 +52,13 @@ namespace MigrationTools.Endpoints
 
             try
             {
-                var dictionary = items.ToDictionary(item => item.Number);
+                var dictionary = new Dictionary<int, RevisionItem>();
+
+                foreach(var item in items)
+                {
+                    if (!dictionary.ContainsKey(item.Number)) dictionary.Add(item.Number, item);
+                }
+
                 return new SortedDictionary<int, RevisionItem>(dictionary);
             }
             catch (ArgumentException e)
