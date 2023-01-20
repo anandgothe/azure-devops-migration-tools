@@ -740,10 +740,10 @@ namespace VstsSyncMigrator.Engine
 
             if (type == "Feature")
             {
-                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy","Microsoft.VSTS.Common.ClosedDate", "System.Watermark", "System.AuthorizedDate",
                 "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
                     "Exact.ReleaseIn","Exact.EffortSize","Exact.ProjectName","Exact.SupportNotification","Exact.NoPBIChanged","Microsoft.VSTS.Common.DescriptionHtml","Exact.EOL.UserStory","Exact.EOL.UserStory","Exact.EOL.HowToDemo"
-                    ,"Exact.EOL.Theme","Exact.ActivityType","Exact.Roadmap","System.Rev"
+                    ,"Exact.EOL.Theme","Exact.ActivityType","Exact.Roadmap","System.Rev","System.Reason","System.History"
                 };
             }
             if (type == "Product Backlog Item")
