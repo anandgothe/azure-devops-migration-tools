@@ -839,6 +839,19 @@ namespace VstsSyncMigrator.Engine
                         if (f.Key == "Exact.CommittedFeature" && string.IsNullOrEmpty(vs))
                             continue;
                     }
+                    if (type == "Product Backlog Item")
+                    {
+                        if (f.Key == "Exact.ADC.Backlog")
+                        {
+                            if (sw.Fields["Exact.ADC.Backlog"].Value?.ToString() == tw.Fields["Custom.Backlog"].Value?.ToString())
+                                continue;
+                        }
+                        if (f.Key == "Exact.ADC.PBIHasIncluded")
+                        {
+                            if (sw.Fields["Exact.ADC.PBIHasIncluded"].Value?.ToString() == tw.Fields["Custom.EffortEstimated"].Value?.ToString())
+                                continue;
+                        }
+                    }
 
                     var targetFieldName = f.Key;
 
