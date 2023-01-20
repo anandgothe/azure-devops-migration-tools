@@ -792,8 +792,26 @@ namespace VstsSyncMigrator.Engine
                     { // ignore decimal point changes in Effort
                         matchingLimit = 50;
                     }
+                    if (type == "Bug")
+                    {
+                        if (f.Key == "Microsoft.VSTS.TCM.ReproSteps")
+                        {
+                            if (sw.Fields["Exact.issuedescription"].Value?.ToString() == tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString())
+                                continue;
+                        }
+                        if (f.Key == "Exact.FixedIn")
+                        {
+                            if (sw.Fields["Exact.FixedIn"].Value?.ToString() == tw.Fields["Custom.FixedinRelease"].Value?.ToString())
+                                continue;
+                        }
+                        if (f.Key == "Exact.Item")
+                        {
+                            if (sw.Fields["Exact.Item"].Value?.ToString() == tw.Fields["Custom.SynergyItem"].Value?.ToString())
+                                continue;
+                        }
+                    }
 
-                    if (type == "Feature")
+                        if (type == "Feature")
                     {
                         if (f.Key == "Microsoft.VSTS.Common.Description" || f.Key == "System.Description")
                         {
