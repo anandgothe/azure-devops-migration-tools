@@ -803,8 +803,11 @@ namespace VstsSyncMigrator.Engine
                     {
                         if (f.Key == "Microsoft.VSTS.TCM.ReproSteps")
                         {
-                            if (sw.Fields["Exact.issuedescription"].Value?.ToString() == tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString())
-                                continue;
+                            //  if (sw.Fields["Exact.issuedescription"].Value?.ToString() == tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString())
+                            vs = sw.Fields["Exact.issuedescription"].Value?.ToString();
+                            vt = tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString();
+                            matchingLimit = 50;
+                            continue;
                         }
                         if (f.Key == "Exact.FixedIn")
                         {
