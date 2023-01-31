@@ -892,11 +892,11 @@ namespace VstsSyncMigrator.Engine
                         if (vs != vt)
                         {
 
-                            if(f.Key == "Exact.DeliveredDate" && type=="Feature")
-                            {
-                                tw.ToWorkItem().Fields[targetFieldName].Value = vs;
-                                tw.SaveToAzureDevOps();
-                            }
+                            //if(f.Key == "Exact.DeliveredDate" && type=="Feature")
+                            //{
+                            //    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+                            //    tw.SaveToAzureDevOps();
+                            //}
 
                             if (vs != null && vt != null)
                             {
