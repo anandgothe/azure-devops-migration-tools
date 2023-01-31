@@ -881,6 +881,13 @@ namespace VstsSyncMigrator.Engine
 
                         if (vs != vt)
                         {
+
+                            if(f.Key == "Exact.DeliveredDate" && type=="Feature")
+                            {
+                                tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+                                tw.SaveToAzureDevOps();
+                            }
+
                             if (vs != null && vt != null)
                             {
                                 if (new[] { "System.AreaPath", "System.TeamProject", "System.IterationPath", "System.NodeName" }.Contains(f.Key))
