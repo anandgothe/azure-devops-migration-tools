@@ -772,6 +772,13 @@ namespace VstsSyncMigrator.Engine
                 "Microsoft.VSTS.Scheduling.BaselineWork","Exact.Review.RejectedReason","Microsoft.VSTS.CMMI.Justification","Microsoft.VSTS.CMMI.Estimate","Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Common.Triage","Exact.ADC.Backlog"
                 };
             }
+            if (type == "Test Case")
+            {
+                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+                "Exact.TAMigrationStatus","Exact.ReasonToNotAutomate","Exact.ADC.Backlog","Exact.ReasonToNotAutomate","Exact.TA.Syn.TestType","Exact.TA.Syn.AutomationStatus"
+                };
+            }
             foreach (var f in sw.Fields)
             {
                 try
@@ -796,8 +803,11 @@ namespace VstsSyncMigrator.Engine
                     {
                         if (f.Key == "Microsoft.VSTS.TCM.ReproSteps")
                         {
-                            if (sw.Fields["Exact.issuedescription"].Value?.ToString() == tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString())
-                                continue;
+                            //  if (sw.Fields["Exact.issuedescription"].Value?.ToString() == tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString())
+                            vs = sw.Fields["Exact.issuedescription"].Value?.ToString();
+                            vt = tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString();
+                            matchingLimit = 50;
+                            continue;
                         }
                         if (f.Key == "Exact.FixedIn")
                         {
