@@ -728,7 +728,7 @@ namespace VstsSyncMigrator.Engine
                 "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
                 "Exact.DateOfAvailability","Exact.FreeText1","Exact.FreeText2","Exact.FreeText3","Exact.StartDate","Microsoft.VSTS.Test.TestPath","","Microsoft.VSTS.Test.TestId","Microsoft.VSTS.Test.TestName","Exact.ADC.Backlog",
                 "Microsoft.VSTS.CMMI.ProposedFix","Microsoft.VSTS.CMMI.StepsToReproduce","Microsoft.VSTS.CMMI.Blocked","Exact.ADC.RiskAnalysis","Microsoft.VSTS.CMMI.HowFound","Microsoft.VSTS.Scheduling.BaselineWork","Exact.OldRequestGuid",
-                "Microsoft.VSTS.CMMI.Symptom","Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Common.Issue","Microsoft.VSTS.CMMI.Estimate"};
+                "Microsoft.VSTS.CMMI.Symptom","Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Common.Issue","Microsoft.VSTS.CMMI.Estimate","System.Reason","System.Rev"};
             }
 
             if (type == "Epic")
