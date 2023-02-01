@@ -28,7 +28,7 @@
     "AuthenticationMode": "AccessToken",
     "PersonalAccessTokenVariableName": "azdoexacttoken",
     "PersonalAccessToken": "",
-    "DummyWorkItemForImageUploads": "436641",
+    "DummyWorkItemForImageUploads": "452107",
     "DelayBetweenTwoWorkItems": 600,
     "WhoToEmail": "a.dsouza@devon.nl",
     "LanguageMaps": {
@@ -310,125 +310,148 @@
       }
     },
     {
-      "$type": "FieldtoFieldMapConfig",
-      "WorkItemTypeName": "Product Backlog Item",
-      "sourceField": "Microsoft.VSTS.Common.DescriptionHtml",
-      "targetField": "System.Description",
-      "defaultValue": null
-    },
-    {
-      "$type": "FieldtoFieldMapConfig",
-      "WorkItemTypeName": "Product Backlog Item",
-      "sourceField": "Exact.SynergyID",
-      "targetField": "Custom.SynergyRequestID",
-      "defaultValue": null
-    },
-    {
-      "$type": "FieldtoFieldMapConfig",
-      "WorkItemTypeName": "Product Backlog Item",
-      "sourceField": "Exact.EOL.UserStory",
-      "targetField": "Custom.UserStory",
-      "defaultValue": null
-    },
-    {
-      "$type": "FieldtoFieldMapConfig",
-      "WorkItemTypeName": "Product Backlog Item",
-      "sourceField": "Exact.EOL.HowToDemo",
-      "targetField": "Custom.HowToDemo",
-      "defaultValue": null
-    },
-    {
       "$type": "FieldValueMapConfig",
       "WorkItemTypeName": "Product Backlog Item",
-      "sourceField": "Exact.ADC.PBIHasIncluded",
-      "targetField": "Custom.EffortEstimated",
-      "defaultValue": null,
-      "valueMapping": {
-        "Yes": "True",
-        "No": "False"
-      }
-    },
-    {
-      "$type": "FieldtoFieldMapConfig",
-      "WorkItemTypeName": "Product Backlog Item",
-      "sourceField": "Exact.ADC.Backlog",
-      "targetField": "Custom.Backlog",
-      "defaultValue": null
-    },
-    {
-      "$type": "FieldValueMapConfig",
-      "WorkItemTypeName": "Task",
-      "sourceField": "System.Reason",
-      "targetField": "System.Reason",
-      "defaultValue": null,
-      "valueMapping": {
-        "New": "New task",
-        "Task Assigned": "Work started",
-        "Task is completed and done": "Work finished",
-        "Task not completed and done": "Additional work found",
-        "Task is removed": "Removed from the backlog",
-        "Task required more study and analysis": "Reconsidering the task"
-      }
-    },
-    {
-      "$type": "FieldtoFieldMapConfig",
-      "WorkItemTypeName": "Task",
-      "sourceField": "Exact.issuedescription",
-      "targetField": "System.Description",
-      "defaultValue": null
-    },
-    {
-      "$type": "FieldtoFieldMapConfig",
-      "WorkItemTypeName": "Roadmap Initiative",
-      "sourceField": "Exact.Roadmap",
-      "targetField": "Custom.SynergyLever",
-      "defaultValue": null
-    },
-    {
-      "$type": "FieldtoFieldMapConfig",
-      "WorkItemTypeName": "Roadmap Initiative",
-      "sourceField": "Exact.PSGProject",
-      "targetField": "Custom.SynergyProject",
-      "defaultValue": null
-    },
-    {
-      "$type": "FieldtoFieldMapConfig",
-      "WorkItemTypeName": "Roadmap Initiative",
-      "sourceField": "Exact.InnovationCategory",
-      "targetField": "Custom.SynergyInnovationCategory",
-      "defaultValue": null
-    },
-    {
-      "$type": "FieldValueMapConfig",
-      "WorkItemTypeName": "Test Case",
       "sourceField": "System.State",
       "targetField": "System.State",
       "defaultValue": "New",
       "valueMapping": {
-        "Active": "Ready",
-        "Blocked": "Closed",
-        "Design": "Design"
+        "Removed ": "Removed",
+        "Sprint ready": "Sprint ready",
+        "Released": "Released",
+        "In sprint": "In Sprint",
+        "Ready for grooming": "Ready for grooming",
+        "New": "New",
+        "Done": "Finished"
       }
     },
-    {
-      "$type": "FieldtoFieldMapConfig",
-      "WorkItemTypeName": "Test Case",
-      "sourceField": "Exact.TA.Syn.ActiveFrom",
-      "targetField": "Custom.ActiveFrom",
-      "defaultValue": null
-    },
-    {
-      "$type": "FieldtoFieldMapConfig",
-      "WorkItemTypeName": "Test Case",
-      "sourceField": "Exact.TA.Syn.ActiveTo",
-      "targetField": "Custom.ActiveTo",
-      "defaultValue": null
-    }
+      {
+        "$type": "FieldtoFieldMapConfig",
+        "WorkItemTypeName": "Product Backlog Item",
+        "sourceField": "Microsoft.VSTS.Common.DescriptionHtml",
+        "targetField": "System.Description",
+        "defaultValue": null
+      },
+      {
+        "$type": "FieldtoFieldMapConfig",
+        "WorkItemTypeName": "Product Backlog Item",
+        "sourceField": "Exact.SynergyID",
+        "targetField": "Custom.SynergyRequestID",
+        "defaultValue": null
+      },
+      {
+        "$type": "FieldtoFieldMapConfig",
+        "WorkItemTypeName": "Product Backlog Item",
+        "sourceField": "Exact.EOL.UserStory",
+        "targetField": "Custom.UserStory",
+        "defaultValue": null
+      },
+      {
+        "$type": "FieldtoFieldMapConfig",
+        "WorkItemTypeName": "Product Backlog Item",
+        "sourceField": "Exact.EOL.HowToDemo",
+        "targetField": "Custom.HowToDemo",
+        "defaultValue": null
+      },
+      {
+        "$type": "FieldValueMapConfig",
+        "WorkItemTypeName": "Product Backlog Item",
+        "sourceField": "Exact.ADC.PBIHasIncluded",
+        "targetField": "Custom.EffortEstimated",
+        "defaultValue": null,
+        "valueMapping": {
+          "Yes": "True",
+          "No": "False"
+        }
+      },
+      {
+        "$type": "FieldtoFieldMapConfig",
+        "WorkItemTypeName": "Product Backlog Item",
+        "sourceField": "Exact.ADC.Backlog",
+        "targetField": "Custom.Backlog",
+        "defaultValue": null
+      },
+      {
+        "$type": "FieldValueMapConfig",
+        "WorkItemTypeName": "Task",
+        "sourceField": "System.Reason",
+        "targetField": "System.Reason",
+        "defaultValue": null,
+        "valueMapping": {
+          "New": "New task",
+          "Task Assigned": "Work started",
+          "Task is completed and done": "Work finished",
+          "Task not completed and done": "Additional work found",
+          "Task is removed": "Removed from the backlog",
+          "Task required more study and analysis": "Reconsidering the task"
+        }
+      },
+      {
+        "$type": "FieldtoFieldMapConfig",
+        "WorkItemTypeName": "Task",
+        "sourceField": "Exact.issuedescription",
+        "targetField": "System.Description",
+        "defaultValue": null
+      },
+      {
+        "$type": "FieldtoFieldMapConfig",
+        "WorkItemTypeName": "Roadmap Initiative",
+        "sourceField": "Exact.Roadmap",
+        "targetField": "Custom.SynergyLever",
+        "defaultValue": null
+      },
+      {
+        "$type": "FieldtoFieldMapConfig",
+        "WorkItemTypeName": "Roadmap Initiative",
+        "sourceField": "Exact.PSGProject",
+        "targetField": "Custom.SynergyProject",
+        "defaultValue": null
+      },
+      {
+        "$type": "FieldtoFieldMapConfig",
+        "WorkItemTypeName": "Roadmap Initiative",
+        "sourceField": "Exact.InnovationCategory",
+        "targetField": "Custom.SynergyInnovationCategory",
+        "defaultValue": null
+      },
+      {
+        "$type": "FieldtoFieldMapConfig",
+        "WorkItemTypeName": "Roadmap Initiative",
+        "sourceField": "Exact.ProjectId",
+        "targetField": "Custom.ProjectID",
+        "defaultValue": null
+      },
+      {
+        "$type": "FieldValueMapConfig",
+        "WorkItemTypeName": "Test Case",
+        "sourceField": "System.State",
+        "targetField": "System.State",
+        "defaultValue": "New",
+        "valueMapping": {
+          "Active": "Ready",
+          "Blocked": "Closed",
+          "Design": "Design"
+        }
+      },
+      {
+        "$type": "FieldtoFieldMapConfig",
+        "WorkItemTypeName": "Test Case",
+        "sourceField": "Exact.TA.Syn.ActiveFrom",
+        "targetField": "Custom.ActiveFrom",
+        "defaultValue": null
+      },
+      {
+        "$type": "FieldtoFieldMapConfig",
+        "WorkItemTypeName": "Test Case",
+        "sourceField": "Exact.TA.Syn.ActiveTo",
+        "targetField": "Custom.ActiveTo",
+        "defaultValue": null
+      }
   ],
   "Processors": [
     {
       "$type": "WorkItemMigrationConfig",
-      "ReplayRevisions": false,
+      "ReplayRevisions": true,
       "PrefixProjectToNodes": false,
       "UpdateCreatedDate": true,
       "UpdateCreatedBy": true,
@@ -437,9 +460,10 @@
       //"WIQLQueryBit": "AND [System.WorkItemType] NOT IN ('Code Review Response', 'Code Review Request', 'Test Case','Shared Steps','Shared Parameter','Test Suite', 'Test Plan') AND [System.AreaPath] NOT UNDER 'Multivers\\Venice' AND [System.ChangedDate] >= '2022-5-15'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Shared Steps','Shared Parameter') AND [System.ID] < '68000'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Test Case') AND [System.ID] = '62515'",
-      "WIQLQueryBit": "AND [System.WorkItemType] IN ('Bug') AND [System.ChangedDate] >= '2017-1-2' AND [System.ChangedDate] < '2020-1-1'",
+      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Bug') AND [System.ChangedDate] >= '2020-1-1'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Product Backlog Item') AND [System.ChangedDate] >= '2009-1-1' AND [System.ChangedDate] <= '2010-10-1'",
-      //"WIQLQueryBit": "AND [System.ID] IN ('268664')",
+      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Roadmap Initiative')",
+      "WIQLQueryBit": "AND [System.ID] IN ('265042')",
       //"WIQLQueryBit": "AND [System.ID] in ('297326','297312','297311')",
       //"WIQLQueryBit": "AND [System.ID] IN ('285343','295453','295464','295465','295466','295520','295530','295531','295545','295594','295615')",
       "WIQLOrderBit": "[System.ID]",
