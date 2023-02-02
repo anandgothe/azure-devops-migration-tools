@@ -895,6 +895,13 @@ namespace VstsSyncMigrator.Engine
                                 continue;
                             }
                         }
+                        if(f.Key == "Exact.ADC.PBIHasIncluded")
+                        {
+                            if(sw.Fields["Exact.ADC.PBIHasIncluded"].Value.ToString() == "" && tw.Fields["Custom.EffortEstimated"].Value.ToString() == "False")
+                            {
+                                continue;
+                            }
+                        }
                     }
 
                     var targetFieldName = f.Key;
@@ -937,6 +944,14 @@ namespace VstsSyncMigrator.Engine
                             //    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
                             //    tw.SaveToAzureDevOps();
                             //}
+                            if (f.Key == "System.State" && type == "Product Backlog Item")
+                            {
+                                if (vs == "Removed" && vt == "New")
+                                {
+                                    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                }
+                            }
 
                             if (vs != null && vt != null)
                             {
