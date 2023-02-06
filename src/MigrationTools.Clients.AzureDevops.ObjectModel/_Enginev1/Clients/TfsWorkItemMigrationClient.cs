@@ -252,6 +252,13 @@ namespace MigrationTools._EngineV1.Clients
 
             queryBuilder.AppendFormat("[{0}] = @idToFind", MigrationClient.Config.AsTeamProjectConfig().ReflectedWorkItemIDFieldName);
             workItemQueryBuilder.AddParameter("idToFind", refId);
+
+            if (MigrationClient.Config.AsTeamProjectConfig().ReflectedWorkItemIDFieldName == "TempMigrationField")
+            {
+                queryBuilder.AppendFormat(" AND [{0}] = @idToFind", "Microsoft.VSTS.Build.IntegrationBuild");
+                workItemQueryBuilder.AddParameter("idToFind", refId);
+            }
+
             workItemQueryBuilder.Query = queryBuilder.ToString();
             return workItemQueryBuilder;
         }
