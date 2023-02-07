@@ -547,6 +547,12 @@ namespace VstsSyncMigrator.Engine
                         }
                     }
                     break;
+                case "HotFix":
+                    if (oldWorkItem.Fields["System.State"].Value.ToString() == "Rejected") // custom rule as requested by YS
+                    {
+                        newWorkItem.Fields["Custom.RejectionReason"].Value = oldWorkItem.Fields["System.Reason"].Value;
+                    }
+                    break;
             }
 
             if (newWorkItem.Fields.Contains("Microsoft.VSTS.Common.BacklogPriority")
@@ -788,7 +794,7 @@ namespace VstsSyncMigrator.Engine
                 "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
                 "Exact.FreeText3","Exact.FreeText2","Exact.FreeText1","Exact.StartDate","Exact.ADC.Backlog","Microsoft.VSTS.CMMI.ImpactOnTechnicalPublications","Microsoft.VSTS.CMMI.ImpactOnDevelopment","Microsoft.VSTS.CMMI.ImpactOnTest",
                 "Microsoft.VSTS.CMMI.ImpactOnUserExperience","Microsoft.VSTS.CMMI.ImpactOnArchitecture","Microsoft.VSTS.CMMI.Justification","Exact.typeofbug","Microsoft.VSTS.CMMI.Blocked","Microsoft.VSTS.Scheduling.BaselineWork","Exact.DateOfAvailability",
-                "Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Scheduling.RemainingWork","Microsoft.VSTS.Common.Triage","Microsoft.VSTS.CMMI.Estimate","Exact.OldRequestGuid"
+                "Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Scheduling.RemainingWork","Microsoft.VSTS.Common.Triage","Microsoft.VSTS.CMMI.Estimate","Exact.OldRequestGuid","System.Description","Microsoft.VSTS.Common.Severity","Microsoft.VSTS.Common.Priority"
                 };
             }
             if (type == "Test Case")
@@ -921,7 +927,11 @@ namespace VstsSyncMigrator.Engine
                             vs = sw.Fields["Exact.issuedescription"].Value?.ToString();
                             vt = tw.Fields["System.Description"].Value?.ToString();
                             matchingLimit = 50;
-                            continue;
+                        }
+                        if(f.Key == "System.WorkItemType")
+                        {
+                            if (sw.Fields["System.WorkItemType"].Value.ToString().ToLower() == tw.Fields["System.WorkItemType"].Value.ToString().ToLower())
+                                continue;
                         }
                     }
                         var targetFieldName = f.Key;
