@@ -274,7 +274,7 @@ namespace MigrationTools._EngineV1.Clients
                 workItemQueryBuilder.AddParameter("idToFind", refId);
             }
 
-            queryBuilder.Append(" ORDER BY [System.Id]");
+            queryBuilder.Append(" ORDER BY [System.Id] DESC");
 
             workItemQueryBuilder.Query = queryBuilder.ToString();
             return workItemQueryBuilder;

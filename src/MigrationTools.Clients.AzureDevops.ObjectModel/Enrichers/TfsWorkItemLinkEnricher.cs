@@ -98,6 +98,12 @@ namespace MigrationTools.Enrichers
                         targetWorkItemLinkStart.ToWorkItem().Reset();
                         Log.LogError(ex, "[UnexpectedErrorException] Adding Link for wiSourceL={sourceWorkItemLinkStartId}", sourceWorkItemLinkStart.Id);
                     }
+                    catch(VerbatimMessageException ex)
+                    {
+                        //sourceWorkItemLinkStart.ToWorkItem().Reset();
+                        targetWorkItemLinkStart.ToWorkItem().Reset();
+                        Log.LogError(ex, "[VerbatimMessageException] Adding Link for wiSourceL={sourceWorkItemLinkStartId}, we'll ignore and continue", sourceWorkItemLinkStart.Id);
+                    }
                 }
             }
             if (sourceWorkItemLinkStart.Type == "Test Case")
