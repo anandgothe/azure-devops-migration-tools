@@ -785,7 +785,7 @@ namespace VstsSyncMigrator.Engine
                 ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
                 "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
                 "Microsoft.VSTS.CMMI.ImpactOnTechnicalPublications","Microsoft.VSTS.CMMI.ImpactOnDevelopment","Microsoft.VSTS.CMMI.ImpactOnTest","Microsoft.VSTS.CMMI.ImpactOnUserExperience","Microsoft.VSTS.CMMI.ImpactOnArchitecture",
-                "Microsoft.VSTS.Scheduling.BaselineWork","Exact.Review.RejectedReason","Microsoft.VSTS.CMMI.Justification","Microsoft.VSTS.CMMI.Estimate","Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Common.Triage","Exact.ADC.Backlog"
+                "Microsoft.VSTS.Scheduling.BaselineWork","Exact.Review.RejectedReason","Microsoft.VSTS.CMMI.Justification","Microsoft.VSTS.CMMI.Estimate","Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Common.Triage","Exact.ADC.Backlog","System.Description"
                 };
             }
             if (type == "HotFix")
@@ -974,14 +974,14 @@ namespace VstsSyncMigrator.Engine
                             //    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
                             //    tw.SaveToAzureDevOps();
                             //}
-                            //if (f.Key == "System.State" && type == "Product Backlog Item")
-                            //{
-                            //    if (vs == "Removed" && vt == "New")
-                            //    {
-                            //        tw.ToWorkItem().Fields[targetFieldName].Value = vs;
-                            //        tw.SaveToAzureDevOps();
-                            //    }
-                            //}
+                            if (f.Key == "System.State" && type == "Product Backlog Item")
+                            {
+                                if (vs == "Removed" && vt == "New")
+                                {
+                                    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                }
+                            }
 
 
                             if (vs != null && vt != null)
