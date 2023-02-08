@@ -201,7 +201,7 @@ namespace MigrationTools.Enrichers
 
         private void CreateRelatedLink(WorkItemData wiSourceL, RelatedLink item, WorkItemData wiTargetL)
         {
-            System.Threading.Thread.Sleep(200);
+            System.Threading.Thread.Sleep(20);
             RelatedLink rl = item;
             WorkItemData wiSourceR = null;
             WorkItemData wiTargetR = null;

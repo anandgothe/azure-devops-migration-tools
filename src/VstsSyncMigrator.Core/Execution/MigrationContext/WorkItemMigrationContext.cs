@@ -267,7 +267,7 @@ namespace VstsSyncMigrator.Engine
                         if (_processedWorkItems[k].Item2.ToWorkItem().IsDirty)
                         {
                             _processedWorkItems[k].Item2.SaveToAzureDevOps();
-                            Thread.Sleep(150);
+                            Thread.Sleep(20);
                         }
 
                         _processedWorkItems[k].Item2.ToWorkItem().Close();
@@ -801,9 +801,11 @@ namespace VstsSyncMigrator.Engine
             {
                 ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
                 "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                "Exact.TAMigrationStatus","Exact.ReasonToNotAutomate","Exact.ADC.Backlog","Exact.ReasonToNotAutomate","Exact.TA.Syn.TestType","Exact.TA.Syn.AutomationStatus"
+                "Exact.TAMigrationStatus","Exact.ReasonToNotAutomate","Exact.ADC.Backlog","Exact.ReasonToNotAutomate","Exact.TA.Syn.TestType","Exact.TA.Syn.AutomationStatus",
+                "System.Rev","Exact.TA.Syn.ActiveTo","Microsoft.VSTS.Common.ActivatedBy","Microsoft.VSTS.Common.ActivatedDate","Microsoft.VSTS.Common.ClosedBy"
                 };
             }
+
             foreach (var f in sw.Fields)
             {
                 try

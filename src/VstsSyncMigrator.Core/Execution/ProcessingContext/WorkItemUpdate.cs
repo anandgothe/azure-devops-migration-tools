@@ -57,9 +57,10 @@ namespace VstsSyncMigrator.Engine
                         {
                             workitem.SaveToAzureDevOps();
                         }
-                        catch (Exception)
+                        catch (Exception ex1)
                         {
-                            System.Threading.Thread.Sleep(15000);
+                            Log.LogError(ex1,"Error when saving work item, retrying...");
+                            System.Threading.Thread.Sleep(30000);
                             workitem.SaveToAzureDevOps();
                         }
                     }

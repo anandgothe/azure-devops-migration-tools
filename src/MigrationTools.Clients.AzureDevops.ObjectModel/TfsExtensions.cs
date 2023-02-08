@@ -135,11 +135,19 @@ namespace MigrationTools
                 Log.Error("ignoring", ex);
                 System.Threading.Thread.Sleep(30000);
             }
+            catch (WorkItemLinkValidationException ex)
+            {
+                Log.Error(ex, "Error while saving work item link, cannot proceed. PRESS CTRL+C to stop the process");
+                Log.CloseAndFlush();
+                Console.ReadLine();
+                Console.ReadLine();
+                Console.ReadLine();
+                Console.ReadLine();
+            }
             catch (Exception ex)
             {
-                Log.Error(ex, "Error while saving work item");
+                Log.Error(ex, "Error while saving work item, retrying");
                 Console.WriteLine(ex.StackTrace);
-                Console.WriteLine("Trying again in 30...");
                 System.Threading.Thread.Sleep(30000);
                 Log.Error("retrying", ex);
                 workItem.Save();
