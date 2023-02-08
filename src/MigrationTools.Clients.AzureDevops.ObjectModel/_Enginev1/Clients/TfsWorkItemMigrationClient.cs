@@ -122,13 +122,18 @@ namespace MigrationTools._EngineV1.Clients
         {
             Log.Debug("GetReflectedWorkItemId: START");
             var local = workItem.ToWorkItem();
+            var reflectedField = Config.AsTeamProjectConfig().ReflectedWorkItemIDFieldName;
+            if (workItem.Type == "Shared Steps")
+            {
+                reflectedField = "Microsoft.VSTS.Build.IntegrationBuild";
+            }
 
-            if (!local.Fields.Contains(Config.AsTeamProjectConfig().ReflectedWorkItemIDFieldName))
+            if (!local.Fields.Contains(reflectedField))
             {
                 Log.Debug("GetReflectedWorkItemId: END - no reflected work item id on work item");
                 return null;
             }
-            string rwiid = local.Fields[Config.AsTeamProjectConfig().ReflectedWorkItemIDFieldName].Value.ToString();
+            string rwiid = local.Fields[reflectedField].Value.ToString();
             if (!string.IsNullOrEmpty(rwiid))
             {
                 Log.Debug("GetReflectedWorkItemId: END - Has ReflectedWorkItemIdField and has value");
@@ -229,7 +234,15 @@ namespace MigrationTools._EngineV1.Clients
                 var query = workItemQueryBuilder.BuildWIQLQuery(MigrationClient);
                 var items = query.GetWorkItems();
                 var reflectedFielName = MigrationClient.Config.AsTeamProjectConfig().ReflectedWorkItemIDFieldName;
-                foundWorkItem = items.FirstOrDefault(wi => wi.ToWorkItem().Fields[reflectedFielName].Value.ToString() == refId.ToString());
+                try
+                {
+                    foundWorkItem = items.FirstOrDefault(wi => wi.ToWorkItem().Fields[reflectedFielName].Value.ToString() == refId.ToString());
+                }
+                catch(FieldDefinitionNotExistException)
+                {
+                    foundWorkItem = items.FirstOrDefault(wi => wi.ToWorkItem().Fields["Microsoft.VSTS.Build.IntegrationBuild"].Value.ToString() == refId.ToString());
+                }
+
                 if (cache && foundWorkItem is not null)
                 {
                     AddToCache(foundWorkItem);
@@ -260,6 +273,8 @@ namespace MigrationTools._EngineV1.Clients
                 queryBuilder.AppendFormat("[{0}] = @idToFind", MigrationClient.Config.AsTeamProjectConfig().ReflectedWorkItemIDFieldName);
                 workItemQueryBuilder.AddParameter("idToFind", refId);
             }
+
+            queryBuilder.Append(" ORDER BY [System.Id]");
 
             workItemQueryBuilder.Query = queryBuilder.ToString();
             return workItemQueryBuilder;
