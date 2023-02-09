@@ -985,6 +985,15 @@ namespace VstsSyncMigrator.Engine
                                 }
                             }
 
+                            if (f.Key == "System.State" && (type == "Bug" || type == "HotFix"))
+                            {
+                                if (vs == "Released" && vt != "Released")
+                                {
+                                    tw.ToWorkItem().Fields[targetFieldName].Value = "Released";
+                                    tw.SaveToAzureDevOps();
+                                }
+                            }
+
 
                             if (vs != null && vt != null)
                             {

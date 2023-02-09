@@ -50,19 +50,19 @@
       "defaultValue": "New",
       "valueMapping": {
         "Approved": "Approved",
-        "Active": "Approved",
-        "Proposed": "New",
+        "Active": "Released",
+        "Proposed": "Released",
         "Done": "Released",
         "Development Estimated": "Approved",
         "Removed": "Removed",
         "Released": "Released",
         "Discard": "Removed",
-        "Closed": "Finished",
+        "Closed": "Released",
         "New": "New",
         "Realized": "Finished",
         "Rejected": "Removed",
-        "Processed": "Finished",
-        "Resolved": "Finished"
+        "Processed": "Released",
+        "Resolved": "Released"
       }
     },
     {
@@ -475,7 +475,7 @@
         "Approved": "Approved",
         "Closed": "Released",
         "New": "New",
-        "Proposed": "New",
+        "Proposed": "Released",
         "Resolved": "Released",
         "Processed": "Released",
         "Active": "Released",
@@ -570,7 +570,7 @@
   "Processors": [
     {
       "$type": "WorkItemMigrationConfig",
-      "ReplayRevisions": false,
+      "ReplayRevisions": true,
       "PrefixProjectToNodes": false,
       "UpdateCreatedDate": true,
       "UpdateCreatedBy": true,
@@ -581,11 +581,12 @@
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Test Case') AND [System.ID] = '62515'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Bug') AND [System.ChangedDate] >= '2020-1-1'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('HotFix') AND [System.ChangedDate] >= '2020-1-1' AND [System.ChangedDate] <= '2020-2-1'",
+      "WIQLQueryBit": "AND [System.WorkItemType] IN ('Task') AND [System.ChangedDate] >= '2020-1-1' AND [System.ChangedDate] <= '2020-1-10'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Product Backlog Item') AND [System.ChangedDate] <= '2013-12-1'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Roadmap Initiative')",
       //"WIQLQueryBit": "AND [System.ID] IN ('267583')",
       //"WIQLQueryBit": "AND [System.ID] in ('268499')",
-      "WIQLQueryBit": "AND [System.ID] IN ('266411')",
+      "WIQLQueryBit": "AND [System.ID] IN ('4590')",
       "WIQLOrderBit": "[System.ID]",
       "Enabled": true,
       "LinkMigration": true,
