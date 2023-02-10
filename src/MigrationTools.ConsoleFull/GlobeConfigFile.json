@@ -6,7 +6,7 @@
   "Source": {
     "$type": "TfsTeamProjectConfig",
     "Collection": "https://tfs.ap.exactsoftware.com:8088/tfs/APCollection",
-    "Project": "SYN_MAIN-Codebase",
+    "Project": "GLB_MAIN-Codebase",
     "ReflectedWorkItemIDFieldName": "Custom.ReflectedWorkItemId",
     "AllowCrossProjectLinking": false,
     "AuthenticationMode": "AccessToken",
@@ -21,7 +21,7 @@
   "Target": {
     "$type": "TfsTeamProjectConfig",
     "Collection": "https://dev.azure.com/ExactGroup/",
-    "Project": "Exact-Synergy",
+    "Project": "Exact-Globe-Plus",
     "ReflectedWorkItemIDFieldName": "TempMigrationField",
     //"ReflectedWorkItemIDFieldName": "Microsoft.VSTS.Build.IntegrationBuild",
     "AllowCrossProjectLinking": false,
