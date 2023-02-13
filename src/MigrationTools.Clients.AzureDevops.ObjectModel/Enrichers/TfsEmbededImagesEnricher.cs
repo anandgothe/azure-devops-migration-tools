@@ -25,7 +25,7 @@ namespace MigrationTools.Enrichers
 
         private readonly Project _targetProject;
         private readonly TfsTeamProjectConfig _targetConfig;
-        private readonly int _dummyWorkItemId;
+        private readonly string[] _dummyWorkItemIds;
 
         private readonly IDictionary<string, string> _cachedUploadedUrisBySourceValue;
 
@@ -33,13 +33,16 @@ namespace MigrationTools.Enrichers
 
         public IMigrationEngine Engine { get; private set; }
 
+        private Random _random;
+
         public TfsEmbededImagesEnricher(IServiceProvider services, ILogger<TfsEmbededImagesEnricher> logger) : base(services, logger)
         {
             Engine = services.GetRequiredService<IMigrationEngine>();
             _targetProject = Engine.Target.WorkItems.Project.ToProject();
             _targetConfig = Engine.Target.Config.AsTeamProjectConfig();
-            _dummyWorkItemId = int.Parse(Engine.Target.Config.AsTeamProjectConfig().DummyWorkItemForImageUploads);
+            _dummyWorkItemIds = Engine.Target.Config.AsTeamProjectConfig().DummyWorkItemForImageUploads.Split(',');
             _cachedUploadedUrisBySourceValue = new System.Collections.Concurrent.ConcurrentDictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+            _random = new Random();
         }
 
         [Obsolete]
@@ -241,6 +244,10 @@ namespace MigrationTools.Enrichers
                     url = link.Url
                 }
             });
+
+            var num = _random.Next(0, _dummyWorkItemIds.Length - 1);
+
+            int _dummyWorkItemId = int.Parse(_dummyWorkItemIds[num]);
 
             //var dummyWi = GetDummyWorkItem(wi.Type);
             var wii = httpClient.UpdateWorkItemAsync(payload, _dummyWorkItemId).GetAwaiter().GetResult();

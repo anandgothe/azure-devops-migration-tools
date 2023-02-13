@@ -18,24 +18,24 @@
       "IterationPath": "Iteration"
     }
   },
-  "Target": {
-    "$type": "TfsTeamProjectConfig",
-    "Collection": "https://dev.azure.com/ExactGroup/",
-    "Project": "Exact-Synergy",
-    "ReflectedWorkItemIDFieldName": "TempMigrationField",
-    //"ReflectedWorkItemIDFieldName": "Microsoft.VSTS.Build.IntegrationBuild",
-    "AllowCrossProjectLinking": false,
-    "AuthenticationMode": "AccessToken",
-    "PersonalAccessTokenVariableName": "azdoexacttokenbaid",
-    "PersonalAccessToken": "",
-    "DummyWorkItemForImageUploads": "449334",
-    "DelayBetweenTwoWorkItems": 600,
-    "WhoToEmail": "a.dsouza@devon.nl",
-    "LanguageMaps": {
-      "AreaPath": "Area",
-      "IterationPath": "Iteration"
-    }
-  },
+	"Target": {
+		"$type": "TfsTeamProjectConfig",
+		"Collection": "https://dev.azure.com/ExactGroup/",
+		"Project": "Exact-Synergy",
+		"ReflectedWorkItemIDFieldName": "TempMigrationField",
+		//"ReflectedWorkItemIDFieldName": "Microsoft.VSTS.Build.IntegrationBuild",
+		"AllowCrossProjectLinking": false,
+		"AuthenticationMode": "AccessToken",
+		"PersonalAccessTokenVariableName": "azdoexacttokenbaid",
+		"PersonalAccessToken": "",
+		"DummyWorkItemForImageUploads": "413801,413802,412345,412346,412347,412348,412349,412350,412351,412352,412353,412355,412356,412357,412358",
+		"DelayBetweenTwoWorkItems": 600,
+		"WhoToEmail": "a.dsouza@devon.nl",
+		"LanguageMaps": {
+			"AreaPath": "Area",
+			"IterationPath": "Iteration"
+		}
+	},
   "WorkItemTypeDefinition": {
     "sourceWorkItemTypeName": "targetWorkItemTypeName"
   },
