@@ -129,11 +129,17 @@ namespace MigrationTools
             }
             catch (System.FormatException ex)
             {
-                Log.Error(ex,"Error while saving work item");
-                Console.WriteLine(ex.StackTrace);
-                Console.WriteLine("ignoring");
-                Log.Error("ignoring", ex);
-                System.Threading.Thread.Sleep(30000);
+                if (ex.Message.Contains("ServerDefaultFieldValue"))
+                {
+                    Log.Warning("Ignoring: " + ex.Message);
+                }
+                else { 
+                    Log.Error(ex, "Error while saving work item");
+                    Console.WriteLine(ex.StackTrace);
+                    Console.WriteLine("ignoring");
+                    Log.Error("ignoring", ex);
+                    System.Threading.Thread.Sleep(30000);
+                }
             }
             catch (WorkItemLinkValidationException ex)
             {
