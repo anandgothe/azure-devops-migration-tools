@@ -802,7 +802,8 @@ namespace VstsSyncMigrator.Engine
                 ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
                 "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
                 "Exact.TAMigrationStatus","Exact.ReasonToNotAutomate","Exact.ADC.Backlog","Exact.ReasonToNotAutomate","Exact.TA.Syn.AutomationStatus",
-                "System.Rev","Microsoft.VSTS.Common.ActivatedBy","Microsoft.VSTS.Common.ActivatedDate","Microsoft.VSTS.Common.ClosedBy"
+                "System.Rev","Microsoft.VSTS.Common.ActivatedBy","Microsoft.VSTS.Common.ActivatedDate","Microsoft.VSTS.Common.ClosedBy",
+                "Exact.Function","Exact.EOL.Theme","Microsoft.VSTS.Scheduling.Effort","Exact.Regressiontest","System.Description"
                 };
             }
 
@@ -964,6 +965,57 @@ namespace VstsSyncMigrator.Engine
 
                         if (vs != vt)
                         {
+                            if (type == "Test Case")
+                            {
+                                if (f.Key == "System.State")
+                                {
+                                    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Exact.Testtype")
+                                {
+                                    tw.ToWorkItem().Fields["Custom.TestType"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Exact.MenuPath")
+                                {
+                                    tw.ToWorkItem().Fields["Custom.MenuPath"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Exact.SynergyID")
+                                {
+                                    tw.ToWorkItem().Fields["Custom.SynergyRequestID"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Microsoft.VSTS.Common.DescriptionHtml")
+                                {
+                                    tw.ToWorkItem().Fields["System.Description"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Exact.Targets")
+                                {
+                                    tw.ToWorkItem().Fields["Custom.Target"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Exact.ActiveTo")
+                                {
+                                    tw.ToWorkItem().Fields["Custom.ActiveTo"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Exact.ActiveFrom")
+                                {
+                                    tw.ToWorkItem().Fields["Custom.ActiveFrom"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                            }
 
                             //if(f.Key == "Exact.DeliveredDate" && type=="Feature")
                             //{
@@ -993,14 +1045,6 @@ namespace VstsSyncMigrator.Engine
                                     tw.SaveToAzureDevOps();
                                 }
                             }
-
-                            // Post-fix for test cases, hopefully not needed for future test cases
-                            //if(f.Key== "Exact.TA.Syn.TestType")
-                            //{
-                            //    tw.ToWorkItem().Fields["Custom.TestType"].Value = vs;
-                            //    tw.SaveToAzureDevOps();
-                            //    continue;
-                            //}
 
 
                             if (vs != null && vt != null)

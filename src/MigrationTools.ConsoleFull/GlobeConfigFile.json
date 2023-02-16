@@ -545,11 +545,13 @@
       "WorkItemTypeName": "Test Case",
       "sourceField": "System.State",
       "targetField": "System.State",
-      "defaultValue": "New",
+      "defaultValue": "Ready",
       "valueMapping": {
         "Active": "Ready",
         "Blocked": "Closed",
-        "Design": "Design"
+        "Design": "Design",
+        "Ready": "Ready",
+        "Closed": "Closed"
       }
     },
     {
@@ -565,6 +567,55 @@
       "sourceField": "Exact.TA.Syn.ActiveTo",
       "targetField": "Custom.ActiveTo",
       "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.ActiveFrom",
+      "targetField": "Custom.ActiveFrom",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.ActiveTo",
+      "targetField": "Custom.ActiveTo",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.Testtype",
+      "targetField": "Custom.TestType",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.SynergyID",
+      "targetField": "Custom.SynergyRequestID",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.Targets",
+      "targetField": "Custom.Target",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Microsoft.VSTS.Common.DescriptionHtml",
+      "targetField": "System.Description",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.MenuPath",
+      "targetField": "Custom.MenuPath",
+      "defaultValue": null
     }
   ],
   "Processors": [
@@ -579,14 +630,14 @@
       //"WIQLQueryBit": "AND [System.WorkItemType] NOT IN ('Code Review Response', 'Code Review Request', 'Test Case','Shared Steps','Shared Parameter','Test Suite', 'Test Plan') AND [System.AreaPath] NOT UNDER 'Multivers\\Venice' AND [System.ChangedDate] >= '2022-5-15'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Shared Steps','Shared Parameter') AND [System.ID] < '68000'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Test Case') AND [System.ID] = '62515'",
-      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Bug') AND [System.ChangedDate] >= '2020-1-1'",
+      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Test Case') AND [System.ChangedDate] < '2014-1-1'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('HotFix') AND [System.ChangedDate] >= '2020-1-1' AND [System.ChangedDate] <= '2020-2-1'",
-      "WIQLQueryBit": "AND [System.WorkItemType] IN ('Task') AND [System.ChangedDate] >= '2020-1-1' AND [System.ChangedDate] <= '2020-1-10'",
+      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Shared Steps') AND [System.CreatedBy] <> 'Kay Weng Ng'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Product Backlog Item') AND [System.ChangedDate] <= '2013-12-1'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Roadmap Initiative')",
       //"WIQLQueryBit": "AND [System.ID] IN ('267583')",
       //"WIQLQueryBit": "AND [System.ID] in ('268499')",
-      //"WIQLQueryBit": "AND [System.ID] IN ('4590')",
+      "WIQLQueryBit": "AND [System.ID] IN ('56159')",
       "WIQLOrderBit": "[System.ID]",
       "Enabled": true,
       "LinkMigration": true,
