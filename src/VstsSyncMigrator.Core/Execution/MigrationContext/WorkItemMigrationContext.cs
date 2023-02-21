@@ -569,6 +569,14 @@ namespace VstsSyncMigrator.Engine
                 description.Append(oldWorkItem.Fields["Exact.EOL.UserStory"].Value?.ToString() + "\n" + oldWorkItem.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value?.ToString());
                 newWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value = oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString() + oldWorkItem.Fields["Exact.EOL.HowToDemo"].Value?.ToString();
             }
+            if (destType=="Test Case" && Engine.Source.Config.AsTeamProjectConfig().Project == "Thunder")
+            {
+                if (!string.IsNullOrEmpty(oldWorkItem.Fields["Custom.Objective"].Value?.ToString()))
+                {
+                    description.Insert(0,"\n---\n");
+                    description.Insert(0, oldWorkItem.Fields["Custom.Objective"].Value.ToString());
+                }               
+            }
 
             newWorkItem.Description = description.ToString();
             fieldMappingTimer.Stop();
@@ -803,7 +811,9 @@ namespace VstsSyncMigrator.Engine
                 "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
                 "Exact.TAMigrationStatus","Exact.ReasonToNotAutomate","Exact.ADC.Backlog","Exact.ReasonToNotAutomate","Exact.TA.Syn.AutomationStatus",
                 "System.Rev","Microsoft.VSTS.Common.ActivatedBy","Microsoft.VSTS.Common.ActivatedDate","Microsoft.VSTS.Common.ClosedBy",
-                "Exact.Function","Exact.EOL.Theme","Microsoft.VSTS.Scheduling.Effort","Exact.Regressiontest","System.Description"
+                "Exact.Function","Exact.EOL.Theme","Microsoft.VSTS.Scheduling.Effort","Exact.Regressiontest","System.Description",
+                "Custom.InternalTestingStatus","Custom.ExternalTestingStatus","Custom.TestAutomationStatus","Custom.ReviewSentDate",
+                "Custom.Objective","Custom.Function","System.RemoteLinkCount","System.History"
                 };
             }
 

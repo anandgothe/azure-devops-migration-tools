@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
@@ -118,6 +119,18 @@ namespace VstsSyncMigrator.Engine
             {
                 _currentPlan++;
 
+                if(_config.StartingNumber>0 && _currentPlan < _config.StartingNumber)
+                {
+                    continue;
+                }
+
+                if (_config.EndingNumber > 0 && _currentPlan > _config.EndingNumber)
+                {
+                    break;
+                }
+
+                Thread.Sleep(10000);
+
                 if (CanSkipElementBecauseOfTags(sourcePlan.Id))
                 {
                     Log.LogInformation("TestPlandsAndSuitesMigrationContext: Skipping Test Plan {Id}:'{Name}' as is not tagged with '{Tag}'.", sourcePlan.Id, sourcePlan.Name, _config.OnlyElementsWithTag);
@@ -159,6 +172,8 @@ namespace VstsSyncMigrator.Engine
             int index = 0;
             foreach (ITestSuiteEntry sourceTestCaseEntry in source.TestCases)
             {
+                Thread.Sleep(1000);
+
                 _currentTestCases++;
                 InnerLog(source, $"Work item: {sourceTestCaseEntry.Id}", 15);
 
@@ -844,6 +859,8 @@ namespace VstsSyncMigrator.Engine
                 metrics.Add("SubSuites", __totalSuites);
                 foreach (var sourceSuiteChild in sourcePlan.RootSuite.SubSuites)
                 {
+                    Thread.Sleep(4000);
+
                     __currentSuite++;
                     InnerLog(sourceSuiteChild, $"", 5, true);
 

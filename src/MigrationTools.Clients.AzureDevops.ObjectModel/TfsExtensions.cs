@@ -119,12 +119,17 @@ namespace MigrationTools
             try
             {
                 Log.Verbose("TfsExtensions::SaveToAzureDevOps::Save()");
-                var val = workItem.Fields["Microsoft.VSTS.Common.ClosedDate"].Value;
+                object val=null;
+                if (workItem.Fields.Contains("Microsoft.VSTS.Common.ClosedDate"))
+                {
+                    val = workItem.Fields["Microsoft.VSTS.Common.ClosedDate"].Value;
+                }
+
                 workItem.Save();
 
-                if (workItem.Fields["Microsoft.VSTS.Common.ClosedDate"].Value == null && val != null)
+                if (workItem.Fields.Contains("Microsoft.VSTS.Common.ClosedDate") && workItem.Fields["Microsoft.VSTS.Common.ClosedDate"].Value == null && val != null)
                 {
-                    workItem.Fields["Microsoft.VSTS.Common.ClosedDate"].Value = val;
+                   workItem.Fields["Microsoft.VSTS.Common.ClosedDate"].Value = val;
                 }
             }
             catch (System.FormatException ex)

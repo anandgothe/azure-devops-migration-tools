@@ -1,0 +1,645 @@
+{
+  "Version": "0.0",
+  "LogLevel": "Information",
+  "workaroundForQuerySOAPBugEnabled": false,
+  "GenerateMigrationComment": false,
+  "Source": {
+    "$type": "TfsTeamProjectConfig",
+    "Collection": "https://tfs.ap.exactsoftware.com:8088/tfs/APCollection",
+    "Project": "GLB_MAIN-Codebase",
+    "ReflectedWorkItemIDFieldName": "Custom.ReflectedWorkItemId",
+    "AllowCrossProjectLinking": false,
+    "AuthenticationMode": "AccessToken",
+    "PersonalAccessTokenVariableName": "tfstoken",
+    //"PersonalAccessToken": "", //and
+    "PersonalAccessToken": "",
+    "LanguageMaps": {
+      "AreaPath": "Area",
+      "IterationPath": "Iteration"
+    }
+  },
+  "Target": {
+    "$type": "TfsTeamProjectConfig",
+    "Collection": "https://dev.azure.com/ExactGroup/",
+    "Project": "Exact-Globe-Plus",
+    "ReflectedWorkItemIDFieldName": "TempMigrationField",
+    //"ReflectedWorkItemIDFieldName": "Microsoft.VSTS.Build.IntegrationBuild",
+    "AllowCrossProjectLinking": false,
+    "AuthenticationMode": "AccessToken",
+    "PersonalAccessTokenVariableName": "azdoexacttokenbaid",
+    "PersonalAccessToken": "",
+    "DummyWorkItemForImageUploads": "449334",
+    "DelayBetweenTwoWorkItems": 600,
+    "WhoToEmail": "a.dsouza@devon.nl",
+    "LanguageMaps": {
+      "AreaPath": "Area",
+      "IterationPath": "Iteration"
+    }
+  },
+  "WorkItemTypeDefinition": {
+    "sourceWorkItemTypeName": "targetWorkItemTypeName"
+  },
+  //"GitRepoMapping": { "AccountancyGemak": "eol-fiscaal-jaarrekening" },
+  "GitRepoMapping": null,
+  "FieldMaps": [
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Bug",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "New",
+      "valueMapping": {
+        "Approved": "Approved",
+        "Active": "Released",
+        "Proposed": "Released",
+        "Done": "Released",
+        "Development Estimated": "Approved",
+        "Removed": "Removed",
+        "Released": "Released",
+        "Discard": "Removed",
+        "Closed": "Released",
+        "New": "New",
+        "Realized": "Finished",
+        "Rejected": "Removed",
+        "Processed": "Released",
+        "Resolved": "Released"
+      }
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Bug",
+      "sourceField": "Exact.Item",
+      "targetField": "Custom.SynergyItem",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Bug",
+      "sourceField": "Exact.FixedIn",
+      "targetField": "Custom.FixedinRelease",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Bug",
+      "sourceField": "Exact.Creator",
+      "targetField": "Custom.SynergyRequestCreator",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Bug",
+      "sourceField": "Exact.requestid",
+      "targetField": "Custom.SynergyRequestID",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Bug",
+      "sourceField": "Exact.RequestType",
+      "targetField": "Custom.SynergyRequestType",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Bug",
+      "sourceField": "Exact.issuedescription",
+      "targetField": "Microsoft.VSTS.TCM.ReproSteps",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Bug",
+      "sourceField": "Exact.Item2",
+      "targetField": "Custom.Item2",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Bug",
+      "sourceField": "Exact.RequestGuid",
+      "targetField": "Custom.SynergyRequestGUID",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Bug",
+      "sourceField": "Exact.typeofbug",
+      "targetField": "Custom.TypeofBug",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Bug",
+      "sourceField": "Exact.ItemAssortment",
+      "targetField": "Custom.ItemAssortment",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Exact.GlobalPriority",
+      "targetField": "Microsoft.VSTS.Common.BacklogPriority",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Exact.ADC.EOLProjectCode",
+      "targetField": "Custom.ExactOnlineProject",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Microsoft.VSTS.Scheduling.TargetDate",
+      "targetField": "Custom.PlannedCRDate",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Exact.EpicEffort",
+      "targetField": "Custom.EstimatedDevDays",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Exact.InnovationCategory",
+      "targetField": "Custom.SynergyInnovationCategory",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Exact.PSGProject",
+      "targetField": "Custom.SynergyProject",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Exact.InvestmentQuarter",
+      "targetField": "Custom.SynergyInvestmentQuarter",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Exact.InnovationRequestStatus",
+      "targetField": "Custom.SynergyRequestStatus",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Exact.requestid",
+      "targetField": "Custom.SynergyRequestID",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Exact.RequestGuid",
+      "targetField": "Custom.SynergyRequestGUID",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Exact.ADC.Backlog",
+      "targetField": "Custom.Backlog",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Exact.Roadmap",
+      "targetField": "Custom.SynergyLever",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Epic",
+      "sourceField": "Exact.PlannedGADate",
+      "targetField": "Custom.PlannedGADate",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "New",
+      "valueMapping": {
+        "Done": "Done",
+        "Removed": "Removed",
+        "New": "New",
+        "In Progress": "In Progress",
+        "Released": "Released",
+        "Development Estimated": "In Progress",
+        "Story created": "Story Created"
+      }
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.SynergyID",
+      "targetField": "Custom.SynergyRequestID",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.Common.ReleaseDate",
+      "targetField": "Microsoft.VSTS.Scheduling.TargetDate",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.GlobalPriority",
+      "targetField": "Microsoft.VSTS.Common.BacklogPriority",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.ADC.EOLProjectCode",
+      "targetField": "Custom.ExactOnlineProject",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.EstimatedDevDays",
+      "targetField": "Custom.EstimatedDevDays",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.ForecastedDate",
+      "targetField": "Custom.ForecastedDate",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.DeliveredDate",
+      "targetField": "Microsoft.VSTS.Common.ClosedDate",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.ADC.Backlog",
+      "targetField": "Custom.Backlog",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "Exact.CommittedFeature",
+      "targetField": "Custom.CommittedFeature",
+      "defaultValue": null,
+      "valueMapping": {
+        "Yes": "True",
+        "No": "False"
+      }
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Product Backlog Item",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "New",
+      "valueMapping": {
+        "Removed ": "Removed",
+        "Sprint ready": "Sprint ready",
+        "Released": "Released",
+        "In sprint": "In Sprint",
+        "Ready for grooming": "Ready for grooming",
+        "New": "New",
+        "Done": "Finished"
+      }
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Product Backlog Item",
+      "sourceField": "Microsoft.VSTS.Common.DescriptionHtml",
+      "targetField": "System.Description",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Product Backlog Item",
+      "sourceField": "Exact.SynergyID",
+      "targetField": "Custom.SynergyRequestID",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Product Backlog Item",
+      "sourceField": "Exact.EOL.UserStory",
+      "targetField": "Custom.UserStory",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Product Backlog Item",
+      "sourceField": "Exact.EOL.HowToDemo",
+      "targetField": "Custom.HowToDemo",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Product Backlog Item",
+      "sourceField": "Exact.ADC.PBIHasIncluded",
+      "targetField": "Custom.EffortEstimated",
+      "defaultValue": null,
+      "valueMapping": {
+        "Yes": "True",
+        "No": "False"
+      }
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Product Backlog Item",
+      "sourceField": "Exact.ADC.Backlog",
+      "targetField": "Custom.Backlog",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Task",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": null,
+      "valueMapping": {
+        "Done": "Done",
+        "Closed": "Done",
+        "Active": "In Progress",
+        "Proposed": "To Do",
+        "Resolved": "Done",
+        "In Progress": "In Progress",
+        "Removed": "Removed",
+        "To-Do": "To Do",
+        "Rejected": "Removed"
+
+      }
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Task",
+      "sourceField": "System.Reason",
+      "targetField": "System.Reason",
+      "defaultValue": null,
+      "valueMapping": {
+        "New": "New task",
+        "Task Assigned": "Work started",
+        "Task is completed and done": "Work finished",
+        "Task not completed and done": "Additional work found",
+        "Task is removed": "Removed from the backlog",
+        "Task required more study and analysis": "Reconsidering the task"
+      }
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Task",
+      "sourceField": "Microsoft.VSTS.Common.Activity",
+      "targetField": "Microsoft.VSTS.Common.Activity",
+      "defaultValue": null,
+      "valueMapping": {
+        "Analysis": "Analysis",
+        "Branching": "Branching",
+        "Code Review": "Code Review",
+        "Coding": "Development",
+        "Database Change - B2B": "Database Change - B2B",
+        "Deployment": "Deployment",
+        "Design": "Design",
+        "Documentation": "Documentation",
+        "Performance": "Performance",
+        "Repository Change": "Repository Change",
+        "Requirements": "Requirements",
+        "Stabilization": "Stabilization",
+        "Test case design": "Test case design",
+        "Test case execution": "Test case execution",
+        "Test case review": "Test case review",
+        "Metadata and XML Change": "Development"
+      }
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Task",
+      "sourceField": "Exact.issuedescription",
+      "targetField": "System.Description",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Roadmap Initiative",
+      "sourceField": "Exact.Roadmap",
+      "targetField": "Custom.SynergyLever",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Roadmap Initiative",
+      "sourceField": "Exact.PSGProject",
+      "targetField": "Custom.SynergyProject",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Roadmap Initiative",
+      "sourceField": "Exact.InnovationCategory",
+      "targetField": "Custom.SynergyInnovationCategory",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Roadmap Initiative",
+      "sourceField": "Exact.ProjectId",
+      "targetField": "Custom.ProjectID",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "HotFix",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": null,
+      "valueMapping": {
+        "Approved": "Approved",
+        "Closed": "Released",
+        "New": "New",
+        "Proposed": "Released",
+        "Resolved": "Released",
+        "Processed": "Released",
+        "Active": "Released",
+        "Rejected": "Removed",
+        "Realized": "Finished"
+
+      }
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "HotFix",
+      "sourceField": "Exact.Item",
+      "targetField": "Custom.SynergyItem",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "HotFix",
+      "sourceField": "Exact.RequestGuid",
+      "targetField": "Custom.SynergyRequestGUID",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "HotFix",
+      "sourceField": "Exact.Item2",
+      "targetField": "Custom.Item2",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "HotFix",
+      "sourceField": "Exact.FixedIn",
+      "targetField": "Custom.FixedinRelease",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "HotFix",
+      "sourceField": "Exact.Creator",
+      "targetField": "Custom.SynergyRequestCreator",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "HotFix",
+      "sourceField": "Exact.requestid",
+      "targetField": "Custom.SynergyRequestID",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "HotFix",
+      "sourceField": "Exact.ItemAssortment",
+      "targetField": "Custom.ItemAssortment",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "HotFix",
+      "sourceField": "Exact.issuedescription",
+      "targetField": "System.Description",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "Ready",
+      "valueMapping": {
+        "Active": "Ready",
+        "Blocked": "Closed",
+        "Design": "Design",
+        "Ready": "Ready",
+        "Closed": "Closed"
+      }
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.TA.Syn.ActiveFrom",
+      "targetField": "Custom.ActiveFrom",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.TA.Syn.ActiveTo",
+      "targetField": "Custom.ActiveTo",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.ActiveFrom",
+      "targetField": "Custom.ActiveFrom",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.ActiveTo",
+      "targetField": "Custom.ActiveTo",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.Testtype",
+      "targetField": "Custom.TestType",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.SynergyID",
+      "targetField": "Custom.SynergyRequestID",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.Targets",
+      "targetField": "Custom.Target",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Microsoft.VSTS.Common.DescriptionHtml",
+      "targetField": "System.Description",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Test Case",
+      "sourceField": "Exact.MenuPath",
+      "targetField": "Custom.MenuPath",
+      "defaultValue": null
+    }
+  ],
+	"Processors": [
+		{
+			"$type": "TestVariablesMigrationConfig",
+			"Enabled": true
+		},
+		{
+			"$type": "TestConfigurationsMigrationConfig",
+			"Enabled": true
+		},
+		{
+			"$type": "TestPlansAndSuitesMigrationConfig",
+			"Enabled": true,
+			"PrefixProjectToNodes": false,
+			"OnlyElementsWithTag": null,
+			"OnlyElementsUnderAreaPath": null,
+			"TestPlanQueryBit": "",
+			"RemoveInvalidTestSuiteLinks": false,
+			"FilterCompleted": false,
+			"NodeBasePaths": [],
+			"MigrationDelay": 5000,
+			"StartingNumber": 1,
+			"EndingNumber": 2
+		}
+	]
+}
