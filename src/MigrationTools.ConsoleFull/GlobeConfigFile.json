@@ -28,7 +28,7 @@
     "AuthenticationMode": "AccessToken",
     "PersonalAccessTokenVariableName": "azdoexacttokenbaid",
     "PersonalAccessToken": "",
-    "DummyWorkItemForImageUploads": "449334",
+    "DummyWorkItemForImageUploads": "175042",
     "DelayBetweenTwoWorkItems": 600,
     "WhoToEmail": "a.dsouza@devon.nl",
     "LanguageMaps": {
@@ -424,8 +424,8 @@
         "Repository Change": "Repository Change",
         "Requirements": "Requirements",
         "Stabilization": "Stabilization",
-        "Test case design": "Test case design",
-        "Test case execution": "Test case execution",
+        "Test Design": "Test case design",
+        "Test Execution": "Test case execution",
         "Test case review": "Test case review",
         "Metadata and XML Change": "Development"
       }
@@ -570,7 +570,7 @@
   "Processors": [
     {
       "$type": "WorkItemMigrationConfig",
-      "ReplayRevisions": true,
+      "ReplayRevisions": false,
       "PrefixProjectToNodes": false,
       "UpdateCreatedDate": true,
       "UpdateCreatedBy": true,
@@ -581,10 +581,10 @@
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Test Case') AND [System.ID] = '62515'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Bug') AND [System.ChangedDate] >= '2020-1-1'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('HotFix') AND [System.ChangedDate] >= '2020-1-1' AND [System.ChangedDate] <= '2020-2-1'",
-      "WIQLQueryBit": "AND [System.WorkItemType] IN ('Task') AND [System.ChangedDate] >= '2020-1-1' AND [System.ChangedDate] <= '2020-1-10'",
+      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Task') AND [System.ChangedDate] >= '2020-1-1' AND [System.ChangedDate] <= '2020-1-10'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Product Backlog Item') AND [System.ChangedDate] <= '2013-12-1'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Roadmap Initiative')",
-      //"WIQLQueryBit": "AND [System.ID] IN ('267583')",
+      "WIQLQueryBit": "AND [System.ID] IN ('56159')",
       //"WIQLQueryBit": "AND [System.ID] in ('268499')",
       //"WIQLQueryBit": "AND [System.ID] IN ('4590')",
       "WIQLOrderBit": "[System.ID]",
