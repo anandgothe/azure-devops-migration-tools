@@ -569,6 +569,14 @@ namespace VstsSyncMigrator.Engine
                 description.Append(oldWorkItem.Fields["Exact.EOL.UserStory"].Value?.ToString() + "\n" + oldWorkItem.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value?.ToString());
                 newWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value = oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString() + oldWorkItem.Fields["Exact.EOL.HowToDemo"].Value?.ToString();
             }
+            if (destType=="Test Case" && Engine.Source.Config.AsTeamProjectConfig().Project == "Thunder")
+            {
+                if (!string.IsNullOrEmpty(oldWorkItem.Fields["Custom.Objective"].Value?.ToString()))
+                {
+                    description.Insert(0,"\n---\n");
+                    description.Insert(0, oldWorkItem.Fields["Custom.Objective"].Value.ToString());
+                }               
+            }
 
             newWorkItem.Description = description.ToString();
             fieldMappingTimer.Stop();
@@ -801,8 +809,11 @@ namespace VstsSyncMigrator.Engine
             {
                 ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
                 "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                "Exact.TAMigrationStatus","Exact.ReasonToNotAutomate","Exact.ADC.Backlog","Exact.ReasonToNotAutomate","Exact.TA.Syn.TestType","Exact.TA.Syn.AutomationStatus",
-                "System.Rev","Exact.TA.Syn.ActiveTo","Microsoft.VSTS.Common.ActivatedBy","Microsoft.VSTS.Common.ActivatedDate","Microsoft.VSTS.Common.ClosedBy"
+                "Exact.TAMigrationStatus","Exact.ReasonToNotAutomate","Exact.ADC.Backlog","Exact.ReasonToNotAutomate","Exact.TA.Syn.AutomationStatus",
+                "System.Rev","Microsoft.VSTS.Common.ActivatedBy","Microsoft.VSTS.Common.ActivatedDate","Microsoft.VSTS.Common.ClosedBy",
+                "Exact.Function","Exact.EOL.Theme","Microsoft.VSTS.Scheduling.Effort","Exact.Regressiontest","System.Description",
+                "Custom.InternalTestingStatus","Custom.ExternalTestingStatus","Custom.TestAutomationStatus","Custom.ReviewSentDate",
+                "Custom.Objective","Custom.Function","System.RemoteLinkCount","System.History"
                 };
             }
 
@@ -964,6 +975,57 @@ namespace VstsSyncMigrator.Engine
 
                         if (vs != vt)
                         {
+                            if (type == "Test Case")
+                            {
+                                if (f.Key == "System.State")
+                                {
+                                    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Exact.Testtype")
+                                {
+                                    tw.ToWorkItem().Fields["Custom.TestType"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Exact.MenuPath")
+                                {
+                                    tw.ToWorkItem().Fields["Custom.MenuPath"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Exact.SynergyID")
+                                {
+                                    tw.ToWorkItem().Fields["Custom.SynergyRequestID"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Microsoft.VSTS.Common.DescriptionHtml")
+                                {
+                                    tw.ToWorkItem().Fields["System.Description"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Exact.Targets")
+                                {
+                                    tw.ToWorkItem().Fields["Custom.Target"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Exact.ActiveTo")
+                                {
+                                    tw.ToWorkItem().Fields["Custom.ActiveTo"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                                if (f.Key == "Exact.ActiveFrom")
+                                {
+                                    tw.ToWorkItem().Fields["Custom.ActiveFrom"].Value = vs;
+                                    tw.SaveToAzureDevOps();
+                                    continue;
+                                }
+                            }
 
                             //if(f.Key == "Exact.DeliveredDate" && type=="Feature")
                             //{

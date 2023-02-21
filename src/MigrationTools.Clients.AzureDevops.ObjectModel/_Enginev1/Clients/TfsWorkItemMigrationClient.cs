@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using Microsoft.ApplicationInsights.DataContracts;
 using Microsoft.TeamFoundation.Client;
 using Microsoft.TeamFoundation.WorkItemTracking.Client;
@@ -160,7 +161,18 @@ namespace MigrationTools._EngineV1.Clients
             WorkItem y;
             try
             {
-                y = Store.GetWorkItem(id);
+                try
+                {
+                    y = Store.GetWorkItem(id);
+                }
+                catch(Exception e)
+                {
+                    Log.Error(e, "Store.GetWorkItem filed, will retry in 30 seconds");
+                    Thread.Sleep(30000);
+                    y = Store.GetWorkItem(id);
+                }
+
+
                 timer.Stop();
                 Telemetry.TrackDependency(new DependencyTelemetry("TfsObjectModel", MigrationClient.Config.AsTeamProjectConfig().Collection.ToString(), "GetWorkItem", null, startTime, timer.Elapsed, "200", true));
             }

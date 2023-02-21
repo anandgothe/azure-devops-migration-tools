@@ -11,6 +11,10 @@ namespace MigrationTools._EngineV1.Configuration.Processing
         public bool RemoveAllLinks { get; set; }
         public int MigrationDelay { get; set; }
 
+        public int StartingNumber { get; set; }
+        public int EndingNumber { get; set; }
+
+
         public bool UseCommonNodeStructureEnricherConfig { get; set; }
         public string[] NodeBasePaths { get; set; }
         public Dictionary<string, string> AreaMaps { get; set; }
@@ -38,6 +42,8 @@ namespace MigrationTools._EngineV1.Configuration.Processing
         {
             MigrationDelay = 0;
             RemoveAllLinks = false;
+            StartingNumber = 0;
+            EndingNumber = 0;
         }
     }
 }

@@ -28,7 +28,7 @@
     "AuthenticationMode": "AccessToken",
     "PersonalAccessTokenVariableName": "azdoexacttokenbaid",
     "PersonalAccessToken": "",
-    "DummyWorkItemForImageUploads": "175042",
+    "DummyWorkItemForImageUploads": "449334",
     "DelayBetweenTwoWorkItems": 600,
     "WhoToEmail": "a.dsouza@devon.nl",
     "LanguageMaps": {
@@ -424,8 +424,8 @@
         "Repository Change": "Repository Change",
         "Requirements": "Requirements",
         "Stabilization": "Stabilization",
-        "Test Design": "Test case design",
-        "Test Execution": "Test case execution",
+        "Test case design": "Test case design",
+        "Test case execution": "Test case execution",
         "Test case review": "Test case review",
         "Metadata and XML Change": "Development"
       }
@@ -618,43 +618,28 @@
       "defaultValue": null
     }
   ],
-  "Processors": [
-    {
-      "$type": "WorkItemMigrationConfig",
-      "ReplayRevisions": false,
-      "PrefixProjectToNodes": false,
-      "UpdateCreatedDate": true,
-      "UpdateCreatedBy": true,
-      "BuildFieldTable": false,
-      "AppendMigrationToolSignatureFooter": false,
-      //"WIQLQueryBit": "AND [System.WorkItemType] NOT IN ('Code Review Response', 'Code Review Request', 'Test Case','Shared Steps','Shared Parameter','Test Suite', 'Test Plan') AND [System.AreaPath] NOT UNDER 'Multivers\\Venice' AND [System.ChangedDate] >= '2022-5-15'",
-      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Shared Steps','Shared Parameter') AND [System.ID] < '68000'",
-      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Test Case') AND [System.ID] = '62515'",
-      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Test Case') AND [System.ChangedDate] < '2014-1-1'",
-      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('HotFix') AND [System.ChangedDate] >= '2020-1-1' AND [System.ChangedDate] <= '2020-2-1'",
-      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Shared Steps') AND [System.CreatedBy] <> 'Kay Weng Ng'",
-      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Task') AND [System.ChangedDate] >= '2020-1-1' AND [System.ChangedDate] <= '2020-1-10'",
-      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Product Backlog Item') AND [System.ChangedDate] <= '2013-12-1'",
-      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Roadmap Initiative')",
-      "WIQLQueryBit": "AND [System.ID] IN ('56159')",
-      //"WIQLQueryBit": "AND [System.ID] in ('268499')",
-      "WIQLQueryBit": "AND [System.ID] IN ('56159')",
-      "WIQLOrderBit": "[System.ID]",
-      "Enabled": true,
-      "LinkMigration": true,
-      "AttachmentMigration": true,
-      "AttachmentWorkingPath": "c:\\temp\\WorkItemAttachmentWorkingFolder\\",
-      "FixHtmlAttachmentLinks": true,
-      "SkipToFinalRevisedWorkItemType": true,
-      "WorkItemCreateRetryLimit": 5,
-      "FilterWorkItemsThatAlreadyExistInTarget": false,
-      "PauseAfterEachWorkItem": false,
-      "AttachmentMaxSize": 480000000,
-      "CollapseRevisions": false,
-      "LinkMigrationSaveEachAsAdded": true,
-      "GenerateMigrationComment": false,
-      "NodeStructureEnricherEnabled": false,
-      "NodeBasePaths": []
-    }
-  ]
+	"Processors": [
+		{
+			"$type": "TestVariablesMigrationConfig",
+			"Enabled": true
+		},
+		{
+			"$type": "TestConfigurationsMigrationConfig",
+			"Enabled": true
+		},
+		{
+			"$type": "TestPlansAndSuitesMigrationConfig",
+			"Enabled": true,
+			"PrefixProjectToNodes": false,
+			"OnlyElementsWithTag": null,
+			"OnlyElementsUnderAreaPath": null,
+			"TestPlanQueryBit": "",
+			"RemoveInvalidTestSuiteLinks": false,
+			"FilterCompleted": false,
+			"NodeBasePaths": [],
+			"MigrationDelay": 5000,
+			"StartingNumber": 1,
+			"EndingNumber": 2
+		}
+	]
 }
