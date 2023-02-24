@@ -2,7 +2,7 @@
   "profiles": {
     "execute": {
       "commandName": "Project",
-      "commandLineArgs": "execute -c ThunderConfig.json"
+      "commandLineArgs": "execute -c QueriesConfigFile.json"
     },
     "init": {
       "commandName": "Project",

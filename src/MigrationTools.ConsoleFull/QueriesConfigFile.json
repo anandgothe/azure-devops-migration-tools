@@ -6,14 +6,16 @@
         "Organisation": "https://tfs.ap.exactsoftware.com:8088/tfs/APCollection/",
         "Project": "SYN_MAIN-Codebase",
         "AuthenticationMode": "AccessToken",
-        "AccessToken": ""
+        "PersonalAccessTokenVariableName": "tfstoken",
+        "AccessToken": "jlok2p3d4igbvyhdlmg6tu3zyuxgblvpnyew3mvpiqhngsddzeia"
       },
       {
         "Name": "MyTarget",
         "Organisation": "https://dev.azure.com/ExactGroup/",
-        "Project": "TestMigration-DevOn",
+        "Project": "Exact-Synergy",
         "AuthenticationMode": "AccessToken",
-        "AccessToken": ""
+        "PersonalAccessTokenVariableName": "azdoexacttoken",
+        "AccessToken": "7u7c24xtrlaryxx5h7pr4ns4cgstmwnae6xgqoyqawbrifptazja"
       }
     ]
   },
@@ -23,15 +25,57 @@
       "Enabled": true,
       "PrefixProjectToNodes": false,
       "SharedFolderName": "Shared Queries",
-      "SourceToTargetFieldMappings": null,
       "ProcessorEnrichers": null,
       "SourceName": "MySource",
-      "TargetName": "MyTarget"
+      "TargetName": "MyTarget",
+      "SourceToTargetFieldMappings": {
+        "Exact.Item": "Custom.SynergyItem",
+        "Exact.FixedIn": "Custom.FixedinRelease",
+        "Exact.Creator": "Custom.SynergyRequestCreator",
+        "Exact.requestid": "Custom.SynergyRequestID",
+        "Exact.RequestType": "Custom.SynergyRequestType",
+        //"Exact.issuedescription": "Microsoft.VSTS.TCM.ReproSteps",
+        "Exact.Item2": "Custom.Item2",
+        "Exact.RequestGuid": "Custom.SynergyRequestGUID",
+        "Exact.typeofbug": "Custom.TypeofBug",
+        "Exact.ItemAssortment": "Custom.ItemAssortment",
+        "Exact.GlobalPriority": "Microsoft.VSTS.Common.BacklogPriority",
+        "Exact.ADC.EOLProjectCode": "Custom.ExactOnlineProject",
+        "Microsoft.VSTS.Scheduling.TargetDate": "Custom.PlannedCRDate",
+        "Exact.EpicEffort": "Custom.EstimatedDevDays",
+        "Exact.InnovationCategory": "Custom.SynergyInnovationCategory",
+        "Exact.PSGProject": "Custom.SynergyProject",
+        "Exact.InvestmentQuarter": "Custom.SynergyInvestmentQuarter",
+        "Exact.InnovationRequestStatus": "Custom.SynergyRequestStatus",
+        "Exact.ADC.Backlog": "Custom.Backlog",
+        "Exact.Roadmap": "Custom.SynergyLever",
+        "Exact.PlannedGADate": "Custom.PlannedGADate",
+        "Exact.SynergyID": "Custom.SynergyRequestID",
+        "Exact.Common.ReleaseDate": "Microsoft.VSTS.Scheduling.TargetDate",
+        "Exact.EstimatedDevDays": "Custom.EstimatedDevDays",
+        "Exact.ForecastedDate": "Custom.ForecastedDate",
+        "Exact.DeliveredDate": "Microsoft.VSTS.Common.ClosedDate",
+        "Exact.CommittedFeature": "Custom.CommittedFeature",
+        "Microsoft.VSTS.Common.DescriptionHtml": "System.Description",
+        "Exact.EOL.UserStory": "Custom.UserStory",
+        "Exact.EOL.HowToDemo": "Custom.HowToDemo",
+        "Exact.ADC.PBIHasIncluded": "Custom.EffortEstimated",
+        "Exact.issuedescription": "System.Description",
+        "Exact.ProjectId": "Custom.ProjectID",
+        "Exact.TA.Syn.ActiveFrom": "Custom.ActiveFrom",
+        "Exact.TA.Syn.ActiveTo": "Custom.ActiveTo",
+        "Exact.ActivityType": "Microsoft.VSTS.Common.Activity",
+        "Microsoft.VSTS.Common.BacklogPriority": "Microsoft.VSTS.Common.BacklogPriority",
+        "Microsoft.VSTS.CMMI.Estimate": "Custom.EstimatedDevDays",
+        "Exact.StartDate": "Microsoft.VSTS.Scheduling.StartDate",
+        "Exact.ReleaseIn": "Custom.Release"
+      },
+
+      "Version": "12.0",
+      "workaroundForQuerySOAPBugEnabled": false,
+      "WorkItemTypeDefinition": {
+        "sourceWorkItemTypeName": "targetWorkItemTypeName"
+      }
     }
-  ],
-  "Version": "12.0",
-  "workaroundForQuerySOAPBugEnabled": false,
-  "WorkItemTypeDefinition": {
-    "sourceWorkItemTypeName": "targetWorkItemTypeName"
-  }
+  ]
 }
