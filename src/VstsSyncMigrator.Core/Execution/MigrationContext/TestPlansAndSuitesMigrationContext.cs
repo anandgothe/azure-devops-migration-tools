@@ -656,6 +656,24 @@ namespace VstsSyncMigrator.Engine
                             string.Format(@"'{0}", source.Plan.Project.TeamProjectName),
                             string.Format(@"'{0}", targetTestStore.Project.TeamProjectName)));
                 }
+
+                if(targetSuiteChild.Query.QueryText.Contains("Exact.TA.Syn.AutomationStatus"))
+                {
+                    targetSuiteChild.Query = targetSuiteChild.Project.CreateTestQuery(targetSuiteChild.Query.QueryText.Replace("Exact.TA.Syn.AutomationStatus", "Microsoft.VSTS.TCM.AutomationStatus"));
+                }
+
+                if (targetSuiteChild.Query.QueryText.Contains("Exact.TAMigrationStatus"))
+                {
+                    targetSuiteChild.Query = targetSuiteChild.Project.CreateTestQuery(targetSuiteChild.Query.QueryText.Replace("Exact.TAMigrationStatus", "Microsoft.VSTS.TCM.AutomationStatus"));
+                }
+
+
+                if (targetSuiteChild.Query.QueryText.Contains("Exact.ADC.Backlog"))
+                {
+                    targetSuiteChild.Query = targetSuiteChild.Project.CreateTestQuery(targetSuiteChild.Query.QueryText.Replace("Exact.ADC.Backlog", "Custom.Backlog"));
+                }
+
+
                 Log.LogInformation("New query is now {0}", targetSuiteChild.Query.QueryText);
             }
         }
