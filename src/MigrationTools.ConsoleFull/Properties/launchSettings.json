@@ -2,7 +2,7 @@
   "profiles": {
     "execute": {
       "commandName": "Project",
-      "commandLineArgs": "execute -c QueriesConfigFile.json"
+      "commandLineArgs": "execute -c SynergyConfigFile.json"
     },
     "init": {
       "commandName": "Project",

@@ -621,7 +621,7 @@
   "Processors": [
     {
       "$type": "WorkItemMigrationConfig",
-      "ReplayRevisions": false,
+      "ReplayRevisions": true,
       "PrefixProjectToNodes": false,
       "UpdateCreatedDate": true,
       "UpdateCreatedBy": true,
@@ -636,9 +636,9 @@
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Task') AND [System.ChangedDate] >= '2020-1-1' AND [System.ChangedDate] <= '2020-1-10'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Product Backlog Item') AND [System.ChangedDate] <= '2013-12-1'",
       //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Roadmap Initiative')",
-      "WIQLQueryBit": "AND [System.ID] IN ('56159')",
+      "WIQLQueryBit": "AND [System.ID] IN ('264765')",
       //"WIQLQueryBit": "AND [System.ID] in ('268499')",
-      "WIQLQueryBit": "AND [System.ID] IN ('56159')",
+      //"WIQLQueryBit": "AND [System.ID] IN ('56159')",
       "WIQLOrderBit": "[System.ID]",
       "Enabled": true,
       "LinkMigration": true,

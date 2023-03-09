@@ -1037,14 +1037,19 @@ namespace VstsSyncMigrator.Engine
                             //{
                             //    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
                             //    tw.SaveToAzureDevOps();
-                            ////}
-                            //if (f.Key == "System.State" && type == "Product Backlog Item")
+                            //}
+                                //if (f.Key == "System.State" && type == "Bug")
+                                //{
+                                //    if (vs == "Removed" && vt == "New")
+                                //    {
+                                //        tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+                                //        tw.SaveToAzureDevOps();
+                                //    }
+                                //}
+                            //if (f.Key == "System.State" && type == "Feature")
                             //{
-                            //    if (vs == "Removed" && vt == "New")
-                            //    {
-                            //        tw.ToWorkItem().Fields[targetFieldName].Value = vs;
-                            //        tw.SaveToAzureDevOps();
-                            //    }
+                            //    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+                            //    tw.SaveToAzureDevOps();
                             //}
 
                             //if (f.Key == "System.State" && (type == "Bug" || type == "HotFix"))
@@ -1055,19 +1060,19 @@ namespace VstsSyncMigrator.Engine
                             //        tw.SaveToAzureDevOps();
                             //    }
                             //}
-                            if (f.Key == "Microsoft.VSTS.Common.Activity" && type == "Task")
-                            {
-                                if (vs == "Test case design" && vt == "Test Design")
-                                {
-                                    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
-                                    tw.SaveToAzureDevOps();
-                                }
-                                if (vs == "Test case execution" && vt == "Test Execution")
-                                {
-                                    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
-                                    tw.SaveToAzureDevOps();
-                                }
-                            }
+                            //if (f.Key == "Microsoft.VSTS.Common.Activity" && type == "Task")
+                            //{
+                            //    if (vs == "Test case design" && vt == "Test Design")
+                            //    {
+                            //        tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+                            //        tw.SaveToAzureDevOps();
+                            //    }
+                            //    if (vs == "Test case execution" && vt == "Test Execution")
+                            //    {
+                            //        tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+                            //        tw.SaveToAzureDevOps();
+                            //    }
+                            //}
 
 
 
