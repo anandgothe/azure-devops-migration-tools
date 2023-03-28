@@ -511,64 +511,64 @@ namespace VstsSyncMigrator.Engine
                 newWorkItem.IterationPath = _nodeStructureEnricher.GetNewNodeName(oldWorkItem.IterationPath, TfsNodeStructureType.Iteration);
             }
 
-            switch (destType)
-            {
-                case "Test Case":
-                    newWorkItem.Fields["Microsoft.VSTS.TCM.Steps"].Value = oldWorkItem.Fields["Microsoft.VSTS.TCM.Steps"].Value;
-                    newWorkItem.Fields["Microsoft.VSTS.Common.Priority"].Value =
-                        oldWorkItem.Fields["Microsoft.VSTS.Common.Priority"].Value;
-                    break;
-                case "Bug":
-                    if (oldWorkItem.Fields["System.State"].Value.ToString() == "Rejected") // custom rule as requested by YS
-                    {
-                        newWorkItem.Fields["Custom.RejectionReason"].Value = oldWorkItem.Fields["System.Reason"].Value;
-                    }
-                    if (oldWorkItem.Fields["System.State"].Value.ToString() == "Processed" || oldWorkItem.Fields["System.State"].Value.ToString() == "Resolved" || oldWorkItem.Fields["System.State"].Value.ToString() == "Realized" || oldWorkItem.Fields["System.State"].Value.ToString() == "Closed") // custom ruls as requested by YS
-                    {
-                        if (newWorkItem.Fields["Custom.Customerimpact"].Value == null || newWorkItem.Fields["Custom.Customerimpact"].Value.ToString() == string.Empty)
-                            newWorkItem.Fields["Custom.Customerimpact"].Value = "3 - Low";
+            //switch (destType)
+            //{
+            //    case "Test Case":
+            //        newWorkItem.Fields["Microsoft.VSTS.TCM.Steps"].Value = oldWorkItem.Fields["Microsoft.VSTS.TCM.Steps"].Value;
+            //        newWorkItem.Fields["Microsoft.VSTS.Common.Priority"].Value =
+            //            oldWorkItem.Fields["Microsoft.VSTS.Common.Priority"].Value;
+            //        break;
+            //    case "Bug":
+            //        if (oldWorkItem.Fields["System.State"].Value.ToString() == "Rejected") // custom rule as requested by YS
+            //        {
+            //            newWorkItem.Fields["Custom.RejectionReason"].Value = oldWorkItem.Fields["System.Reason"].Value;
+            //        }
+            //        if (oldWorkItem.Fields["System.State"].Value.ToString() == "Processed" || oldWorkItem.Fields["System.State"].Value.ToString() == "Resolved" || oldWorkItem.Fields["System.State"].Value.ToString() == "Realized" || oldWorkItem.Fields["System.State"].Value.ToString() == "Closed") // custom ruls as requested by YS
+            //        {
+            //            if (newWorkItem.Fields["Custom.Customerimpact"].Value == null || newWorkItem.Fields["Custom.Customerimpact"].Value.ToString() == string.Empty)
+            //                newWorkItem.Fields["Custom.Customerimpact"].Value = "3 - Low";
 
-                        if (newWorkItem.Fields["Custom.Technicalrisk"].Value == null || newWorkItem.Fields["Custom.Technicalrisk"].Value.ToString() == string.Empty)
-                            newWorkItem.Fields["Custom.Technicalrisk"].Value = "3 - Low";
-                    }
-                    break;
-                case "Product Backlog Item":
-                    if (oldWorkItem.Fields["Exact.ADC.RiskAnalysis"].Value != null)
-                    {
-                        if (oldWorkItem.Fields["Exact.ADC.RiskAnalysis"].Value.ToString() == "Yes")
-                        { 
-                            newWorkItem.Fields["Custom.Customerimpact"].Value = "2 - Medium";
-                            newWorkItem.Fields["Custom.Technicalrisk"].Value = "2 - Medium";
-                        }
-                        if (oldWorkItem.Fields["Exact.ADC.RiskAnalysis"].Value.ToString() == "No")
-                        { 
-                            newWorkItem.Fields["Custom.Customerimpact"].Value = "3 - Low";
-                            newWorkItem.Fields["Custom.Technicalrisk"].Value = "3 - Low";
-                        }
-                    }
-                    break;
-                case "HotFix":
-                    if (oldWorkItem.Fields["System.State"].Value.ToString() == "Rejected") // custom rule as requested by YS
-                    {
-                        newWorkItem.Fields["Custom.RejectionReason"].Value = oldWorkItem.Fields["System.Reason"].Value;
-                    }
-                    break;
-            }
+            //            if (newWorkItem.Fields["Custom.Technicalrisk"].Value == null || newWorkItem.Fields["Custom.Technicalrisk"].Value.ToString() == string.Empty)
+            //                newWorkItem.Fields["Custom.Technicalrisk"].Value = "3 - Low";
+            //        }
+            //        break;
+            //    case "Product Backlog Item":
+            //        if (oldWorkItem.Fields["Exact.ADC.RiskAnalysis"].Value != null)
+            //        {
+            //            if (oldWorkItem.Fields["Exact.ADC.RiskAnalysis"].Value.ToString() == "Yes")
+            //            { 
+            //                newWorkItem.Fields["Custom.Customerimpact"].Value = "2 - Medium";
+            //                newWorkItem.Fields["Custom.Technicalrisk"].Value = "2 - Medium";
+            //            }
+            //            if (oldWorkItem.Fields["Exact.ADC.RiskAnalysis"].Value.ToString() == "No")
+            //            { 
+            //                newWorkItem.Fields["Custom.Customerimpact"].Value = "3 - Low";
+            //                newWorkItem.Fields["Custom.Technicalrisk"].Value = "3 - Low";
+            //            }
+            //        }
+            //        break;
+            //    case "HotFix":
+            //        if (oldWorkItem.Fields["System.State"].Value.ToString() == "Rejected") // custom rule as requested by YS
+            //        {
+            //            newWorkItem.Fields["Custom.RejectionReason"].Value = oldWorkItem.Fields["System.Reason"].Value;
+            //        }
+            //        break;
+            //}
 
-            if (newWorkItem.Fields.Contains("Microsoft.VSTS.Common.BacklogPriority")
-                && newWorkItem.Fields["Microsoft.VSTS.Common.BacklogPriority"].Value != null
-                && !IsNumeric(newWorkItem.Fields["Microsoft.VSTS.Common.BacklogPriority"].Value.ToString(),
-                    NumberStyles.Any))
-                newWorkItem.Fields["Microsoft.VSTS.Common.BacklogPriority"].Value = 10;
+            //if (newWorkItem.Fields.Contains("Microsoft.VSTS.Common.BacklogPriority")
+            //    && newWorkItem.Fields["Microsoft.VSTS.Common.BacklogPriority"].Value != null
+            //    && !IsNumeric(newWorkItem.Fields["Microsoft.VSTS.Common.BacklogPriority"].Value.ToString(),
+            //        NumberStyles.Any))
+            //    newWorkItem.Fields["Microsoft.VSTS.Common.BacklogPriority"].Value = 10;
 
             var description = new StringBuilder();
             description.Append(oldWorkItem.Description);
-            if (destType == "Feature")
-            {
-                if (!string.IsNullOrEmpty(description.ToString())) description.Append("\n---\n");
-                description.Append(oldWorkItem.Fields["Exact.EOL.UserStory"].Value?.ToString() + "\n" + oldWorkItem.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value?.ToString());
-                newWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value = oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString() + oldWorkItem.Fields["Exact.EOL.HowToDemo"].Value?.ToString();
-            }
+            //if (destType == "Feature")
+            //{
+            //    if (!string.IsNullOrEmpty(description.ToString())) description.Append("\n---\n");
+            //    description.Append(oldWorkItem.Fields["Exact.EOL.UserStory"].Value?.ToString() + "\n" + oldWorkItem.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value?.ToString());
+            //    newWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value = oldWorkItem.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString() + oldWorkItem.Fields["Exact.EOL.HowToDemo"].Value?.ToString();
+            //}
             if (destType=="Test Case" && Engine.Source.Config.AsTeamProjectConfig().Project == "Thunder")
             {
                 if (!string.IsNullOrEmpty(oldWorkItem.Fields["Custom.Objective"].Value?.ToString()))
@@ -735,398 +735,398 @@ namespace VstsSyncMigrator.Engine
 
         private void CompareWI(WorkItemData sw, WorkItemData tw)
         {
-            Log.LogInformation($"COMPARING WI ID (s) {sw.Id} ---------> {tw.Id}");
-            //bool diff = false;
+        //    Log.LogInformation($"COMPARING WI ID (s) {sw.Id} ---------> {tw.Id}");
+        //    //bool diff = false;
            
-            var sourceProject = Engine.Source.Config.AsTeamProjectConfig().Project;
-            var targetProject = Engine.Target.Config.AsTeamProjectConfig().Project;
+        //    var sourceProject = Engine.Source.Config.AsTeamProjectConfig().Project;
+        //    var targetProject = Engine.Target.Config.AsTeamProjectConfig().Project;
 
-            var type = sw.Fields["System.WorkItemType"].Value.ToString();
+        //    var type = sw.Fields["System.WorkItemType"].Value.ToString();
 
-            string[] ignoredFields = new string[] { };
+        //    string[] ignoredFields = new string[] { };
 
-            if (type == "Bug")
-            {
-                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
-                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                "Exact.DateOfAvailability","Exact.FreeText1","Exact.FreeText2","Exact.FreeText3","Exact.StartDate","Microsoft.VSTS.Test.TestPath","","Microsoft.VSTS.Test.TestId","Microsoft.VSTS.Test.TestName","Exact.ADC.Backlog",
-                "Microsoft.VSTS.CMMI.ProposedFix","Microsoft.VSTS.CMMI.StepsToReproduce","Microsoft.VSTS.CMMI.Blocked","Exact.ADC.RiskAnalysis","Microsoft.VSTS.CMMI.HowFound","Microsoft.VSTS.Scheduling.BaselineWork","Exact.OldRequestGuid",
-                "Microsoft.VSTS.CMMI.Symptom","Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Common.Issue","Microsoft.VSTS.CMMI.Estimate","System.Reason","System.Rev","Microsoft.VSTS.Common.ClosedBy"};
-            }
+        //    if (type == "Bug")
+        //    {
+        //        ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+        //        "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+        //        "Exact.DateOfAvailability","Exact.FreeText1","Exact.FreeText2","Exact.FreeText3","Exact.StartDate","Microsoft.VSTS.Test.TestPath","","Microsoft.VSTS.Test.TestId","Microsoft.VSTS.Test.TestName","Exact.ADC.Backlog",
+        //        "Microsoft.VSTS.CMMI.ProposedFix","Microsoft.VSTS.CMMI.StepsToReproduce","Microsoft.VSTS.CMMI.Blocked","Exact.ADC.RiskAnalysis","Microsoft.VSTS.CMMI.HowFound","Microsoft.VSTS.Scheduling.BaselineWork","Exact.OldRequestGuid",
+        //        "Microsoft.VSTS.CMMI.Symptom","Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Common.Issue","Microsoft.VSTS.CMMI.Estimate","System.Reason","System.Rev","Microsoft.VSTS.Common.ClosedBy"};
+        //    }
 
-            if (type == "Epic")
-            {
-                ignoredFields = new [] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
-                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                "Microsoft.VSTS.Common.BacklogPriority","Microsoft.VSTS.Common.ActivatedDate","System.Rev","Microsoft.VSTS.CMMI.RequirementType" ,"Exact.ProjectId"};
-            }
+        //    if (type == "Epic")
+        //    {
+        //        ignoredFields = new [] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+        //        "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+        //        "Microsoft.VSTS.Common.BacklogPriority","Microsoft.VSTS.Common.ActivatedDate","System.Rev","Microsoft.VSTS.CMMI.RequirementType" ,"Exact.ProjectId"};
+        //    }
 
-            if (type == "Feature")
-            {
-                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy","Microsoft.VSTS.Common.ClosedDate", "System.Watermark", "System.AuthorizedDate",
-                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                    "Exact.ReleaseIn","Exact.EffortSize","Exact.ProjectName","Exact.SupportNotification","Exact.NoPBIChanged","Microsoft.VSTS.Common.DescriptionHtml","Exact.EOL.UserStory","Exact.EOL.UserStory","Exact.EOL.HowToDemo"
-                    ,"Exact.EOL.Theme","Exact.ActivityType","Exact.Roadmap","System.Rev","System.Reason","System.History"
-                };
-            }
-            if (type == "Product Backlog Item")
-            {
-                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
-                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                "System.Description","Exact.ActivityType","Exact.ADC.AlphaPreview","Exact.ADC.STBRemark","Exact.ADC.AlphaTestingCovered","Exact.ADC.STBTestingCovered","Exact.ADC.AlphaTestingRemark","Exact.ADC.Tag",
-                "Exact.EOL.Theme","Exact.ADC.AuditException"
-                };
-            }
+        //    if (type == "Feature")
+        //    {
+        //        ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy","Microsoft.VSTS.Common.ClosedDate", "System.Watermark", "System.AuthorizedDate",
+        //        "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+        //            "Exact.ReleaseIn","Exact.EffortSize","Exact.ProjectName","Exact.SupportNotification","Exact.NoPBIChanged","Microsoft.VSTS.Common.DescriptionHtml","Exact.EOL.UserStory","Exact.EOL.UserStory","Exact.EOL.HowToDemo"
+        //            ,"Exact.EOL.Theme","Exact.ActivityType","Exact.Roadmap","System.Rev","System.Reason","System.History"
+        //        };
+        //    }
+        //    if (type == "Product Backlog Item")
+        //    {
+        //        ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+        //        "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+        //        "System.Description","Exact.ActivityType","Exact.ADC.AlphaPreview","Exact.ADC.STBRemark","Exact.ADC.AlphaTestingCovered","Exact.ADC.STBTestingCovered","Exact.ADC.AlphaTestingRemark","Exact.ADC.Tag",
+        //        "Exact.EOL.Theme","Exact.ADC.AuditException"
+        //        };
+        //    }
 
-            if (type == "Roadmap Initiative")
-            {
-                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
-                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                "Microsoft.VSTS.CMMI.RequirementType","Exact.InitiativeEffort","Exact.FocusAreas","Exact.ShowInReport","Microsoft.VSTS.Scheduling.StartDate","Microsoft.VSTS.Scheduling.TargetDate",
-                "Microsoft.VSTS.Common.AcceptanceCriteria","Microsoft.VSTS.Common.BusinessValue","Microsoft.VSTS.Common.ActivatedBy","Microsoft.VSTS.Common.ActivatedDate","Microsoft.VSTS.Common.Priority","Microsoft.VSTS.Build.IntegrationBuild"
-                ,"Exact.RequestGuid"
-                };
-            }
+        //    if (type == "Roadmap Initiative")
+        //    {
+        //        ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+        //        "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+        //        "Microsoft.VSTS.CMMI.RequirementType","Exact.InitiativeEffort","Exact.FocusAreas","Exact.ShowInReport","Microsoft.VSTS.Scheduling.StartDate","Microsoft.VSTS.Scheduling.TargetDate",
+        //        "Microsoft.VSTS.Common.AcceptanceCriteria","Microsoft.VSTS.Common.BusinessValue","Microsoft.VSTS.Common.ActivatedBy","Microsoft.VSTS.Common.ActivatedDate","Microsoft.VSTS.Common.Priority","Microsoft.VSTS.Build.IntegrationBuild"
+        //        ,"Exact.RequestGuid"
+        //        };
+        //    }
 
-            if (type == "Task")
-            {
-                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
-                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                "Microsoft.VSTS.CMMI.ImpactOnTechnicalPublications","Microsoft.VSTS.CMMI.ImpactOnDevelopment","Microsoft.VSTS.CMMI.ImpactOnTest","Microsoft.VSTS.CMMI.ImpactOnUserExperience","Microsoft.VSTS.CMMI.ImpactOnArchitecture",
-                "Microsoft.VSTS.Scheduling.BaselineWork","Exact.Review.RejectedReason","Microsoft.VSTS.CMMI.Justification","Microsoft.VSTS.CMMI.Estimate","Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Common.Triage","Exact.ADC.Backlog","System.Description"
-                };
-            }
-            if (type == "HotFix")
-            {
-                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
-                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                "Exact.FreeText3","Exact.FreeText2","Exact.FreeText1","Exact.StartDate","Exact.ADC.Backlog","Microsoft.VSTS.CMMI.ImpactOnTechnicalPublications","Microsoft.VSTS.CMMI.ImpactOnDevelopment","Microsoft.VSTS.CMMI.ImpactOnTest",
-                "Microsoft.VSTS.CMMI.ImpactOnUserExperience","Microsoft.VSTS.CMMI.ImpactOnArchitecture","Microsoft.VSTS.CMMI.Justification","Exact.typeofbug","Microsoft.VSTS.CMMI.Blocked","Microsoft.VSTS.Scheduling.BaselineWork","Exact.DateOfAvailability",
-                "Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Scheduling.RemainingWork","Microsoft.VSTS.Common.Triage","Microsoft.VSTS.CMMI.Estimate","Exact.OldRequestGuid","System.Description","Microsoft.VSTS.Common.Severity","Microsoft.VSTS.Common.Priority"
-                };
-            }
-            if (type == "Test Case")
-            {
-                ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
-                "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
-                "Exact.TAMigrationStatus","Exact.ReasonToNotAutomate","Exact.ADC.Backlog","Exact.ReasonToNotAutomate","Exact.TA.Syn.AutomationStatus",
-                "System.Rev","Microsoft.VSTS.Common.ActivatedBy","Microsoft.VSTS.Common.ActivatedDate","Microsoft.VSTS.Common.ClosedBy",
-                "Exact.Function","Exact.EOL.Theme","Microsoft.VSTS.Scheduling.Effort","Exact.Regressiontest","System.Description",
-                "Custom.InternalTestingStatus","Custom.ExternalTestingStatus","Custom.TestAutomationStatus","Custom.ReviewSentDate",
-                "Custom.Objective","Custom.Function","System.RemoteLinkCount","System.History"
-                };
-            }
+        //    if (type == "Task")
+        //    {
+        //        ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+        //        "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+        //        "Microsoft.VSTS.CMMI.ImpactOnTechnicalPublications","Microsoft.VSTS.CMMI.ImpactOnDevelopment","Microsoft.VSTS.CMMI.ImpactOnTest","Microsoft.VSTS.CMMI.ImpactOnUserExperience","Microsoft.VSTS.CMMI.ImpactOnArchitecture",
+        //        "Microsoft.VSTS.Scheduling.BaselineWork","Exact.Review.RejectedReason","Microsoft.VSTS.CMMI.Justification","Microsoft.VSTS.CMMI.Estimate","Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Common.Triage","Exact.ADC.Backlog","System.Description"
+        //        };
+        //    }
+        //    if (type == "HotFix")
+        //    {
+        //        ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+        //        "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+        //        "Exact.FreeText3","Exact.FreeText2","Exact.FreeText1","Exact.StartDate","Exact.ADC.Backlog","Microsoft.VSTS.CMMI.ImpactOnTechnicalPublications","Microsoft.VSTS.CMMI.ImpactOnDevelopment","Microsoft.VSTS.CMMI.ImpactOnTest",
+        //        "Microsoft.VSTS.CMMI.ImpactOnUserExperience","Microsoft.VSTS.CMMI.ImpactOnArchitecture","Microsoft.VSTS.CMMI.Justification","Exact.typeofbug","Microsoft.VSTS.CMMI.Blocked","Microsoft.VSTS.Scheduling.BaselineWork","Exact.DateOfAvailability",
+        //        "Microsoft.VSTS.Scheduling.CompletedWork","Microsoft.VSTS.Scheduling.RemainingWork","Microsoft.VSTS.Common.Triage","Microsoft.VSTS.CMMI.Estimate","Exact.OldRequestGuid","System.Description","Microsoft.VSTS.Common.Severity","Microsoft.VSTS.Common.Priority"
+        //        };
+        //    }
+        //    if (type == "Test Case")
+        //    {
+        //        ignoredFields = new[] { "System.IterationId", "System.Id", "System.AuthorizedAs","System.AreaId","System.ChangedBy", "System.Watermark", "System.AuthorizedDate",
+        //        "Microsoft.VSTS.Common.StateChangeDate","System.ChangedDate","Microsoft.VSTS.CMMI.RequirementType","Microsoft.VSTS.Common.ClosedDate","System.BoardColumnDone","System.BoardColumn","System.RelatedLinkCount",
+        //        "Exact.TAMigrationStatus","Exact.ReasonToNotAutomate","Exact.ADC.Backlog","Exact.ReasonToNotAutomate","Exact.TA.Syn.AutomationStatus",
+        //        "System.Rev","Microsoft.VSTS.Common.ActivatedBy","Microsoft.VSTS.Common.ActivatedDate","Microsoft.VSTS.Common.ClosedBy",
+        //        "Exact.Function","Exact.EOL.Theme","Microsoft.VSTS.Scheduling.Effort","Exact.Regressiontest","System.Description",
+        //        "Custom.InternalTestingStatus","Custom.ExternalTestingStatus","Custom.TestAutomationStatus","Custom.ReviewSentDate",
+        //        "Custom.Objective","Custom.Function","System.RemoteLinkCount","System.History"
+        //        };
+        //    }
 
-            foreach (var f in sw.Fields)
-            {
-                try
-                {
-                    if (ignoredFields.Contains(f.Key)) continue;
+        //    foreach (var f in sw.Fields)
+        //    {
+        //        try
+        //        {
+        //            if (ignoredFields.Contains(f.Key)) continue;
 
-                    if ((f.Key == "System.History") && !_config.ReplayRevisions)
-                    {
-                        // history differences if ReplyRevisions is OFF
-                        continue;
-                    }
+        //            if ((f.Key == "System.History") && !_config.ReplayRevisions)
+        //            {
+        //                // history differences if ReplyRevisions is OFF
+        //                continue;
+        //            }
 
-                    var vs = f.Value.Value?.ToString();
-                    string vt = null;
-                    int matchingLimit = 90;
+        //            var vs = f.Value.Value?.ToString();
+        //            string vt = null;
+        //            int matchingLimit = 90;
 
-                    if (f.Key == "Exact.EpicEffort")
-                    { // ignore decimal point changes in Effort
-                        matchingLimit = 50;
-                    }
-                    if (type == "Bug")
-                    {
-                        if (f.Key == "Microsoft.VSTS.TCM.ReproSteps")
-                        {
-                            //  if (sw.Fields["Exact.issuedescription"].Value?.ToString() == tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString())
-                            vs = sw.Fields["Exact.issuedescription"].Value?.ToString();
-                            vt = tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString();
-                            matchingLimit = 50;
-                            continue;
-                        }
-                        if (f.Key == "Exact.FixedIn")
-                        {
-                            if (sw.Fields["Exact.FixedIn"].Value?.ToString() == tw.Fields["Custom.FixedinRelease"].Value?.ToString())
-                                continue;
-                        }
-                        if (f.Key == "Exact.Item")
-                        {
-                            if (sw.Fields["Exact.Item"].Value?.ToString() == tw.Fields["Custom.SynergyItem"].Value?.ToString())
-                                continue;
-                        }
-                    }
+        //            if (f.Key == "Exact.EpicEffort")
+        //            { // ignore decimal point changes in Effort
+        //                matchingLimit = 50;
+        //            }
+        //            if (type == "Bug")
+        //            {
+        //                if (f.Key == "Microsoft.VSTS.TCM.ReproSteps")
+        //                {
+        //                    //  if (sw.Fields["Exact.issuedescription"].Value?.ToString() == tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString())
+        //                    vs = sw.Fields["Exact.issuedescription"].Value?.ToString();
+        //                    vt = tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString();
+        //                    matchingLimit = 50;
+        //                    continue;
+        //                }
+        //                if (f.Key == "Exact.FixedIn")
+        //                {
+        //                    if (sw.Fields["Exact.FixedIn"].Value?.ToString() == tw.Fields["Custom.FixedinRelease"].Value?.ToString())
+        //                        continue;
+        //                }
+        //                if (f.Key == "Exact.Item")
+        //                {
+        //                    if (sw.Fields["Exact.Item"].Value?.ToString() == tw.Fields["Custom.SynergyItem"].Value?.ToString())
+        //                        continue;
+        //                }
+        //            }
 
-                        if (type == "Feature")
-                    {
-                        if (f.Key == "Microsoft.VSTS.Common.Description" || f.Key == "System.Description")
-                        {
-                            vs = sw.Fields["Exact.EOL.UserStory"].Value?.ToString() + sw.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value?.ToString();
-                            vt = tw.Fields["System.Description"].Value?.ToString();
-                            matchingLimit = 50;
-                        }
+        //                if (type == "Feature")
+        //            {
+        //                if (f.Key == "Microsoft.VSTS.Common.Description" || f.Key == "System.Description")
+        //                {
+        //                    vs = sw.Fields["Exact.EOL.UserStory"].Value?.ToString() + sw.Fields["Microsoft.VSTS.Common.DescriptionHtml"].Value?.ToString();
+        //                    vt = tw.Fields["System.Description"].Value?.ToString();
+        //                    matchingLimit = 50;
+        //                }
 
-                        if (f.Key == "Microsoft.VSTS.Common.AcceptanceCriteria")
-                        {
-                            vs = sw.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString() + sw.Fields["Exact.EOL.HowToDemo"].Value?.ToString();
-                            vt = tw.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString();
-                            matchingLimit = 50;
+        //                if (f.Key == "Microsoft.VSTS.Common.AcceptanceCriteria")
+        //                {
+        //                    vs = sw.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString() + sw.Fields["Exact.EOL.HowToDemo"].Value?.ToString();
+        //                    vt = tw.Fields["Microsoft.VSTS.Common.AcceptanceCriteria"].Value?.ToString();
+        //                    matchingLimit = 50;
 
-                            if (vs == "<p><br></p>")
-                                vs = "";
-                        }
+        //                    if (vs == "<p><br></p>")
+        //                        vs = "";
+        //                }
 
-                        if (f.Key== "Microsoft.VSTS.Common.BacklogPriority")
-                        {
-                            if (sw.Fields["Exact.GlobalPriority"].Value?.ToString() == tw.Fields["Microsoft.VSTS.Common.BacklogPriority"].Value?.ToString())
-                                continue;
-                        }
+        //                if (f.Key== "Microsoft.VSTS.Common.BacklogPriority")
+        //                {
+        //                    if (sw.Fields["Exact.GlobalPriority"].Value?.ToString() == tw.Fields["Microsoft.VSTS.Common.BacklogPriority"].Value?.ToString())
+        //                        continue;
+        //                }
 
-                        if (f.Key == "Exact.CommittedFeature" && string.IsNullOrEmpty(vs))
-                            continue;
-                    }
-                    if (type == "Product Backlog Item")
-                    {
-                        if (f.Key == "Exact.ADC.PBIHasIncluded")
-                        {
-                            vs = sw.Fields["Exact.ADC.PBIHasIncluded"].Value?.ToString();
-                            vt = tw.Fields["Custom.EffortEstimated"].Value?.ToString();
-                            matchingLimit = 50;
-                        }
-                        if (f.Key == "Exact.ADC.RiskAnalysis")
-                        {
-                            if (sw.Fields["Exact.ADC.RiskAnalysis"].Value?.ToString() == "No"
-                                && tw.Fields["Custom.Customerimpact"].Value?.ToString() == "3 - Low"
-                                && tw.Fields["Custom.Technicalrisk"].Value?.ToString() == "3 - Low")
-                            {
-                                continue;
-                            }
+        //                if (f.Key == "Exact.CommittedFeature" && string.IsNullOrEmpty(vs))
+        //                    continue;
+        //            }
+        //            if (type == "Product Backlog Item")
+        //            {
+        //                if (f.Key == "Exact.ADC.PBIHasIncluded")
+        //                {
+        //                    vs = sw.Fields["Exact.ADC.PBIHasIncluded"].Value?.ToString();
+        //                    vt = tw.Fields["Custom.EffortEstimated"].Value?.ToString();
+        //                    matchingLimit = 50;
+        //                }
+        //                if (f.Key == "Exact.ADC.RiskAnalysis")
+        //                {
+        //                    if (sw.Fields["Exact.ADC.RiskAnalysis"].Value?.ToString() == "No"
+        //                        && tw.Fields["Custom.Customerimpact"].Value?.ToString() == "3 - Low"
+        //                        && tw.Fields["Custom.Technicalrisk"].Value?.ToString() == "3 - Low")
+        //                    {
+        //                        continue;
+        //                    }
 
-                            if(sw.Fields["Exact.ADC.RiskAnalysis"].Value?.ToString() == "Yes"
-                                && tw.Fields["Custom.Customerimpact"].Value?.ToString() == "2 - Medium"
-                                && tw.Fields["Custom.Technicalrisk"].Value?.ToString() == "2 - Medium")
-                            {
-                                continue;
-                            }
+        //                    if(sw.Fields["Exact.ADC.RiskAnalysis"].Value?.ToString() == "Yes"
+        //                        && tw.Fields["Custom.Customerimpact"].Value?.ToString() == "2 - Medium"
+        //                        && tw.Fields["Custom.Technicalrisk"].Value?.ToString() == "2 - Medium")
+        //                    {
+        //                        continue;
+        //                    }
 
-                            if (sw.Fields["Exact.ADC.RiskAnalysis"].Value == tw.Fields["Custom.Customerimpact"].Value 
-                                && sw.Fields["Exact.ADC.RiskAnalysis"].Value == tw.Fields["Custom.Technicalrisk"].Value)
-                            {
-                                continue;
-                            }
-                        }
-                        if(f.Key == "Exact.ADC.PBIHasIncluded")
-                        {
-                            if(sw.Fields["Exact.ADC.PBIHasIncluded"].Value.ToString() == "" && tw.Fields["Custom.EffortEstimated"].Value.ToString() == "False")
-                            {
-                                continue;
-                            }
-                        }
-                        if(f.Key == "Exact.ADC.Backlog")
-                        {
-                            if (sw.Fields["Exact.ADC.Backlog"].Value.ToString() == "" && tw.Fields["Custom.Backlog"].Value.ToString() == "Release")
-                            {
-                                continue;
-                            }
-                        }
-                    }
-                    if (type == "HotFix")
-                    {
-                        if (f.Key == "Exact.issuedescription")
-                        {
-                            //  if (sw.Fields["Exact.issuedescription"].Value?.ToString() == tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString())
-                            vs = sw.Fields["Exact.issuedescription"].Value?.ToString();
-                            vt = tw.Fields["System.Description"].Value?.ToString();
-                            matchingLimit = 50;
-                        }
-                        if(f.Key == "System.WorkItemType")
-                        {
-                            if (sw.Fields["System.WorkItemType"].Value.ToString().ToLower() == tw.Fields["System.WorkItemType"].Value.ToString().ToLower())
-                                continue;
-                        }
-                    }
-                        var targetFieldName = f.Key;
+        //                    if (sw.Fields["Exact.ADC.RiskAnalysis"].Value == tw.Fields["Custom.Customerimpact"].Value 
+        //                        && sw.Fields["Exact.ADC.RiskAnalysis"].Value == tw.Fields["Custom.Technicalrisk"].Value)
+        //                    {
+        //                        continue;
+        //                    }
+        //                }
+        //                if(f.Key == "Exact.ADC.PBIHasIncluded")
+        //                {
+        //                    if(sw.Fields["Exact.ADC.PBIHasIncluded"].Value.ToString() == "" && tw.Fields["Custom.EffortEstimated"].Value.ToString() == "False")
+        //                    {
+        //                        continue;
+        //                    }
+        //                }
+        //                if(f.Key == "Exact.ADC.Backlog")
+        //                {
+        //                    if (sw.Fields["Exact.ADC.Backlog"].Value.ToString() == "" && tw.Fields["Custom.Backlog"].Value.ToString() == "Release")
+        //                    {
+        //                        continue;
+        //                    }
+        //                }
+        //            }
+        //            if (type == "HotFix")
+        //            {
+        //                if (f.Key == "Exact.issuedescription")
+        //                {
+        //                    //  if (sw.Fields["Exact.issuedescription"].Value?.ToString() == tw.Fields["Microsoft.VSTS.TCM.ReproSteps"].Value?.ToString())
+        //                    vs = sw.Fields["Exact.issuedescription"].Value?.ToString();
+        //                    vt = tw.Fields["System.Description"].Value?.ToString();
+        //                    matchingLimit = 50;
+        //                }
+        //                if(f.Key == "System.WorkItemType")
+        //                {
+        //                    if (sw.Fields["System.WorkItemType"].Value.ToString().ToLower() == tw.Fields["System.WorkItemType"].Value.ToString().ToLower())
+        //                        continue;
+        //                }
+        //            }
+        //                var targetFieldName = f.Key;
 
-                    var targetFieldMapping = GetMapping(f.Key, type);
+        //            var targetFieldMapping = GetMapping(f.Key, type);
 
-                    if (targetFieldMapping != null)
-                    {
-                        if(targetFieldMapping is FieldToFieldMap)
-                        {
-                            targetFieldName = ((FieldToFieldMap)targetFieldMapping).Config.targetField;
-                        }
-                        else if (targetFieldMapping is FieldValueMap)
-                        {
-                            var valueMap = ((FieldValueMap)targetFieldMapping);
-                            targetFieldName = valueMap.Config.targetField;
-                            if (valueMap.Config.valueMapping.ContainsKey(vs))
-                            {
-                                vs = valueMap.Config.valueMapping[vs].ToString();
-                            }
-                        }
-                    }
+        //            if (targetFieldMapping != null)
+        //            {
+        //                if(targetFieldMapping is FieldToFieldMap)
+        //                {
+        //                    targetFieldName = ((FieldToFieldMap)targetFieldMapping).Config.targetField;
+        //                }
+        //                else if (targetFieldMapping is FieldValueMap)
+        //                {
+        //                    var valueMap = ((FieldValueMap)targetFieldMapping);
+        //                    targetFieldName = valueMap.Config.targetField;
+        //                    if (valueMap.Config.valueMapping.ContainsKey(vs))
+        //                    {
+        //                        vs = valueMap.Config.valueMapping[vs].ToString();
+        //                    }
+        //                }
+        //            }
 
-                    if (tw.Fields.ContainsKey(targetFieldName))
-                    {
-                        if(vt==null)
-                         vt = tw.Fields[targetFieldName].Value?.ToString();
+        //            if (tw.Fields.ContainsKey(targetFieldName))
+        //            {
+        //                if(vt==null)
+        //                 vt = tw.Fields[targetFieldName].Value?.ToString();
 
-                        if (vs != vt)
-                        {
-                            if (type == "Test Case")
-                            {
-                                if (f.Key == "System.State")
-                                {
-                                    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
-                                    tw.SaveToAzureDevOps();
-                                    continue;
-                                }
-                                if (f.Key == "Exact.Testtype")
-                                {
-                                    tw.ToWorkItem().Fields["Custom.TestType"].Value = vs;
-                                    tw.SaveToAzureDevOps();
-                                    continue;
-                                }
-                                if (f.Key == "Exact.MenuPath")
-                                {
-                                    tw.ToWorkItem().Fields["Custom.MenuPath"].Value = vs;
-                                    tw.SaveToAzureDevOps();
-                                    continue;
-                                }
-                                if (f.Key == "Exact.SynergyID")
-                                {
-                                    tw.ToWorkItem().Fields["Custom.SynergyRequestID"].Value = vs;
-                                    tw.SaveToAzureDevOps();
-                                    continue;
-                                }
-                                if (f.Key == "Microsoft.VSTS.Common.DescriptionHtml")
-                                {
-                                    tw.ToWorkItem().Fields["System.Description"].Value = vs;
-                                    tw.SaveToAzureDevOps();
-                                    continue;
-                                }
-                                if (f.Key == "Exact.Targets")
-                                {
-                                    tw.ToWorkItem().Fields["Custom.Target"].Value = vs;
-                                    tw.SaveToAzureDevOps();
-                                    continue;
-                                }
-                                if (f.Key == "Exact.ActiveTo")
-                                {
-                                    tw.ToWorkItem().Fields["Custom.ActiveTo"].Value = vs;
-                                    tw.SaveToAzureDevOps();
-                                    continue;
-                                }
-                                if (f.Key == "Exact.ActiveFrom")
-                                {
-                                    tw.ToWorkItem().Fields["Custom.ActiveFrom"].Value = vs;
-                                    tw.SaveToAzureDevOps();
-                                    continue;
-                                }
-                            }
+        //                if (vs != vt)
+        //                {
+        //                    if (type == "Test Case")
+        //                    {
+        //                        if (f.Key == "System.State")
+        //                        {
+        //                            tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+        //                            tw.SaveToAzureDevOps();
+        //                            continue;
+        //                        }
+        //                        if (f.Key == "Exact.Testtype")
+        //                        {
+        //                            tw.ToWorkItem().Fields["Custom.TestType"].Value = vs;
+        //                            tw.SaveToAzureDevOps();
+        //                            continue;
+        //                        }
+        //                        if (f.Key == "Exact.MenuPath")
+        //                        {
+        //                            tw.ToWorkItem().Fields["Custom.MenuPath"].Value = vs;
+        //                            tw.SaveToAzureDevOps();
+        //                            continue;
+        //                        }
+        //                        if (f.Key == "Exact.SynergyID")
+        //                        {
+        //                            tw.ToWorkItem().Fields["Custom.SynergyRequestID"].Value = vs;
+        //                            tw.SaveToAzureDevOps();
+        //                            continue;
+        //                        }
+        //                        if (f.Key == "Microsoft.VSTS.Common.DescriptionHtml")
+        //                        {
+        //                            tw.ToWorkItem().Fields["System.Description"].Value = vs;
+        //                            tw.SaveToAzureDevOps();
+        //                            continue;
+        //                        }
+        //                        if (f.Key == "Exact.Targets")
+        //                        {
+        //                            tw.ToWorkItem().Fields["Custom.Target"].Value = vs;
+        //                            tw.SaveToAzureDevOps();
+        //                            continue;
+        //                        }
+        //                        if (f.Key == "Exact.ActiveTo")
+        //                        {
+        //                            tw.ToWorkItem().Fields["Custom.ActiveTo"].Value = vs;
+        //                            tw.SaveToAzureDevOps();
+        //                            continue;
+        //                        }
+        //                        if (f.Key == "Exact.ActiveFrom")
+        //                        {
+        //                            tw.ToWorkItem().Fields["Custom.ActiveFrom"].Value = vs;
+        //                            tw.SaveToAzureDevOps();
+        //                            continue;
+        //                        }
+        //                    }
 
-                            //if(f.Key == "Exact.DeliveredDate" && type=="Feature")
-                            //{
-                            //    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
-                            //    tw.SaveToAzureDevOps();
-                            //}
+        //                    //if(f.Key == "Exact.DeliveredDate" && type=="Feature")
+        //                    //{
+        //                    //    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+        //                    //    tw.SaveToAzureDevOps();
+        //                    //}
 
-                            //if (f.Key == "Microsoft.VSTS.CMMI.FoundInEnvironment" && type == "Bug")
-                            //{
-                            //    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
-                            //    tw.SaveToAzureDevOps();
-                            //}
-                                //if (f.Key == "System.State" && type == "Bug")
-                                //{
-                                //    if (vs == "Removed" && vt == "New")
-                                //    {
-                                //        tw.ToWorkItem().Fields[targetFieldName].Value = vs;
-                                //        tw.SaveToAzureDevOps();
-                                //    }
-                                //}
-                            //if (f.Key == "System.State" && type == "Feature")
-                            //{
-                            //    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
-                            //    tw.SaveToAzureDevOps();
-                            //}
+        //                    //if (f.Key == "Microsoft.VSTS.CMMI.FoundInEnvironment" && type == "Bug")
+        //                    //{
+        //                    //    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+        //                    //    tw.SaveToAzureDevOps();
+        //                    //}
+        //                        //if (f.Key == "System.State" && type == "Bug")
+        //                        //{
+        //                        //    if (vs == "Removed" && vt == "New")
+        //                        //    {
+        //                        //        tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+        //                        //        tw.SaveToAzureDevOps();
+        //                        //    }
+        //                        //}
+        //                    //if (f.Key == "System.State" && type == "Feature")
+        //                    //{
+        //                    //    tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+        //                    //    tw.SaveToAzureDevOps();
+        //                    //}
 
-                            //if (f.Key == "System.State" && (type == "Bug" || type == "HotFix"))
-                            //{
-                            //    if (vs == "Released" && vt != "Released")
-                            //    {
-                            //        tw.ToWorkItem().Fields[targetFieldName].Value = "Released";
-                            //        tw.SaveToAzureDevOps();
-                            //    }
-                            //}
-                            //if (f.Key == "Microsoft.VSTS.Common.Activity" && type == "Task")
-                            //{
-                            //    if (vs == "Test case design" && vt == "Test Design")
-                            //    {
-                            //        tw.ToWorkItem().Fields[targetFieldName].Value = vs;
-                            //        tw.SaveToAzureDevOps();
-                            //    }
-                            //    if (vs == "Test case execution" && vt == "Test Execution")
-                            //    {
-                            //        tw.ToWorkItem().Fields[targetFieldName].Value = vs;
-                            //        tw.SaveToAzureDevOps();
-                            //    }
-                            //}
+        //                    //if (f.Key == "System.State" && (type == "Bug" || type == "HotFix"))
+        //                    //{
+        //                    //    if (vs == "Released" && vt != "Released")
+        //                    //    {
+        //                    //        tw.ToWorkItem().Fields[targetFieldName].Value = "Released";
+        //                    //        tw.SaveToAzureDevOps();
+        //                    //    }
+        //                    //}
+        //                    //if (f.Key == "Microsoft.VSTS.Common.Activity" && type == "Task")
+        //                    //{
+        //                    //    if (vs == "Test case design" && vt == "Test Design")
+        //                    //    {
+        //                    //        tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+        //                    //        tw.SaveToAzureDevOps();
+        //                    //    }
+        //                    //    if (vs == "Test case execution" && vt == "Test Execution")
+        //                    //    {
+        //                    //        tw.ToWorkItem().Fields[targetFieldName].Value = vs;
+        //                    //        tw.SaveToAzureDevOps();
+        //                    //    }
+        //                    //}
 
 
 
-                            if (vs != null && vt != null)
-                            {
-                                if (new[] { "System.AreaPath", "System.TeamProject", "System.IterationPath", "System.NodeName" }.Contains(f.Key))
-                                {
-                                    vt = vt.Replace(targetProject, sourceProject);
-                                }
+        //                    if (vs != null && vt != null)
+        //                    {
+        //                        if (new[] { "System.AreaPath", "System.TeamProject", "System.IterationPath", "System.NodeName" }.Contains(f.Key))
+        //                        {
+        //                            vt = vt.Replace(targetProject, sourceProject);
+        //                        }
 
-                                var matching = FuzzySharp.Fuzz.Ratio(vs, vt);
+        //                        var matching = FuzzySharp.Fuzz.Ratio(vs, vt);
 
-                                if (matching < matchingLimit)
-                                {
-                                    ReportCompareError($"VALUE MISMATCH FOR {f.Key} | {matching}% | {vs ?? string.Empty} --------------------------------------> {vt ?? string.Empty}", sw.Id, tw.Id);
-                                }
-                            }
-                            else
-                            {
-                                ReportCompareError($"VALUE MISMATCH FOR {f.Key} | {vs ?? string.Empty} ---------------------------------> {vt ?? string.Empty}", sw.Id, tw.Id);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        ReportCompareError($"FIELD NOT FOUND ON TARGET " + f.Key + " -> " + targetFieldName, sw.Id, tw.Id);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Log.LogError(ex, "Error when comparing " + f.Key);
-                }
-            }
+        //                        if (matching < matchingLimit)
+        //                        {
+        //                            ReportCompareError($"VALUE MISMATCH FOR {f.Key} | {matching}% | {vs ?? string.Empty} --------------------------------------> {vt ?? string.Empty}", sw.Id, tw.Id);
+        //                        }
+        //                    }
+        //                    else
+        //                    {
+        //                        ReportCompareError($"VALUE MISMATCH FOR {f.Key} | {vs ?? string.Empty} ---------------------------------> {vt ?? string.Empty}", sw.Id, tw.Id);
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                ReportCompareError($"FIELD NOT FOUND ON TARGET " + f.Key + " -> " + targetFieldName, sw.Id, tw.Id);
+        //            }
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            Log.LogError(ex, "Error when comparing " + f.Key);
+        //        }
+        //    }
 
-            if (sw.Revisions.Count != tw.Revisions.Count && _config.ReplayRevisions)
-            {
-                ReportCompareError($" Revisions.Count don't match {sw.Revisions.Count()}----->{tw.Revisions.Count()}", sw.Id, tw.Id);
-            }
+        //    if (sw.Revisions.Count != tw.Revisions.Count && _config.ReplayRevisions)
+        //    {
+        //        ReportCompareError($" Revisions.Count don't match {sw.Revisions.Count()}----->{tw.Revisions.Count()}", sw.Id, tw.Id);
+        //    }
 
-            if (sw.Links.Count != tw.Links.Count && _config.ReplayRevisions)
-            {
-                ReportCompareError($" Links.Count don't match {sw.Links.Count()}-----> {tw.Links.Count()}", sw.Id,tw.Id);
-            }
+        //    if (sw.Links.Count != tw.Links.Count && _config.ReplayRevisions)
+        //    {
+        //        ReportCompareError($" Links.Count don't match {sw.Links.Count()}-----> {tw.Links.Count()}", sw.Id,tw.Id);
+        //    }
 
-            //if (diff)
-            //{
-            //    Log.LogError($"FOUND DIFFERENCES FOR WI ID (s) {sw.Id} ---------> {tw.Id}");
-            //    comparisons.Add($"COMPARE FAILED FOR {sw.Id} ---------> {tw.Id}");
-            //}
-            //else
-            //{
-            //    comparisons.Add($"COMPARE OK FOR {sw.Id} ---------> {tw.Id}");
-            //    Log.LogInformation($"COMPARE OK");
-            //}
+        //    //if (diff)
+        //    //{
+        //    //    Log.LogError($"FOUND DIFFERENCES FOR WI ID (s) {sw.Id} ---------> {tw.Id}");
+        //    //    comparisons.Add($"COMPARE FAILED FOR {sw.Id} ---------> {tw.Id}");
+        //    //}
+        //    //else
+        //    //{
+        //    //    comparisons.Add($"COMPARE OK FOR {sw.Id} ---------> {tw.Id}");
+        //    //    Log.LogInformation($"COMPARE OK");
+        //    //}
         }
 
         void ReportCompareError(string msg, string sid, string tid)

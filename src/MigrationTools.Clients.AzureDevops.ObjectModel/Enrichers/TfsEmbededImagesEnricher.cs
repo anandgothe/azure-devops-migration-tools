@@ -60,7 +60,7 @@ namespace MigrationTools.Enrichers
         [Obsolete]
         public override int Enrich(WorkItemData sourceWorkItem, WorkItemData targetWorkItem)
         {
-            var TfsConfig = Engine.Target.Config.AsTeamProjectConfig();
+            var TfsConfig = Engine.Source.Config.AsTeamProjectConfig();
             FixEmbededImages(targetWorkItem, Engine.Source.Config.AsTeamProjectConfig().Collection.ToString(), Engine.Target.Config.AsTeamProjectConfig().Collection.ToString(), TfsConfig.GetPatToken());
             return 0;
         }

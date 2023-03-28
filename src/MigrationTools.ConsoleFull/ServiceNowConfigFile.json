@@ -1,0 +1,103 @@
+{
+  "Version": "0.0",
+  "LogLevel": "Information",
+  "workaroundForQuerySOAPBugEnabled": false,
+  "GenerateMigrationComment": false,
+  "Source": {
+    "$type": "TfsTeamProjectConfig",
+    "Collection": "https://dev.azure.com/devopsmkb",
+    "Project": "ServiceNow",
+    "ReflectedWorkItemIDFieldName": "Custom.ReflectedWorkItemId",
+    "AllowCrossProjectLinking": false,
+    "AuthenticationMode": "AccessToken",
+    //"PersonalAccessTokenVariableName": "tfstoken",
+    //"PersonalAccessToken": "", //and
+    "PersonalAccessToken": "",
+    "LanguageMaps": {
+      "AreaPath": "Area",
+      "IterationPath": "Iteration"
+    }
+  },
+  "Target": {
+    "$type": "TfsTeamProjectConfig",
+    "Collection": "https://dev.azure.com/ExactGroup/",
+    "Project": "ServiceNow",
+    "ReflectedWorkItemIDFieldName": "TempMigrationField",
+    //"ReflectedWorkItemIDFieldName": "Microsoft.VSTS.Build.IntegrationBuild",
+    "AllowCrossProjectLinking": false,
+    "AuthenticationMode": "AccessToken",
+    //"PersonalAccessTokenVariableName": "azdoexacttoken",
+    "PersonalAccessToken": "",
+    "DummyWorkItemForImageUploads": "418206,174993,172720,174470,418076",
+    "DelayBetweenTwoWorkItems": 600,
+    "WhoToEmail": "a.dsouza@devon.nl",
+    "LanguageMaps": {
+      "AreaPath": "Area",
+      "IterationPath": "Iteration"
+    }
+  },
+  "WorkItemTypeDefinition": {
+    "sourceWorkItemTypeName": "targetWorkItemTypeName"
+  },
+  //"GitRepoMapping": { "AccountancyGemak": "eol-fiscaal-jaarrekening" },
+  "GitRepoMapping": null,
+  "FieldMaps": [
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "New",
+      "valueMapping": {
+        "Done": "Done",
+        "Removed": "Removed",
+        "New": "New",
+        "In Progress": "In Progress",
+        "Released": "Released",
+        "Development Estimated": "In Progress",
+        "Story created": "Story Created"
+      }
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Product Backlog Item",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "New",
+      "valueMapping": {
+        "Done": "Finished"
+      }
+    }
+  ],
+  "Processors": [
+    {
+      "$type": "WorkItemMigrationConfig",
+      "ReplayRevisions": true,
+      "PrefixProjectToNodes": false,
+      "UpdateCreatedDate": true,
+      "UpdateCreatedBy": true,
+      "BuildFieldTable": false,
+      "AppendMigrationToolSignatureFooter": false,
+      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('HotFix') AND [System.ChangedDate] >= '2020-1-1' AND [System.ChangedDate] <= '2020-2-1'",
+      //"WIQLQueryBit": "",
+      "WIQLQueryBit": "AND [System.ID] IN ('56159')",
+
+      "WIQLOrderBit": "[System.ID]",
+      "Enabled": true,
+      "LinkMigration": true,
+      "AttachmentMigration": true,
+      "AttachmentWorkingPath": "c:\\temp\\WorkItemAttachmentWorkingFolder\\",
+      "FixHtmlAttachmentLinks": true,
+      "SkipToFinalRevisedWorkItemType": true,
+      "WorkItemCreateRetryLimit": 5,
+      "FilterWorkItemsThatAlreadyExistInTarget": false,
+      "PauseAfterEachWorkItem": false,
+      "AttachmentMaxSize": 480000000,
+      "CollapseRevisions": false,
+      "LinkMigrationSaveEachAsAdded": true,
+      "GenerateMigrationComment": false,
+      "NodeStructureEnricherEnabled": true,
+      "NodeBasePaths": []
+    }
+  ]
+}

@@ -2,7 +2,7 @@
   "profiles": {
     "execute": {
       "commandName": "Project",
-      "commandLineArgs": "execute -c SynergyConfigFile.json"
+      "commandLineArgs": "execute -c CloudopsConfigFile.json"
     },
     "init": {
       "commandName": "Project",
