@@ -4,7 +4,7 @@
       {
         "Name": "MySource",
         "Organisation": "https://tfs.ap.exactsoftware.com:8088/tfs/APCollection/",
-        "Project": "SYN_MAIN-Codebase",
+        "Project": "GLB_MAIN-Codebase",
         "AuthenticationMode": "AccessToken",
         "PersonalAccessTokenVariableName": "tfstoken",
         "AccessToken": ""
@@ -12,7 +12,7 @@
       {
         "Name": "MyTarget",
         "Organisation": "https://dev.azure.com/ExactGroup/",
-        "Project": "Exact-Synergy",
+        "Project": "Exact-Globe-Plus",
         "AuthenticationMode": "AccessToken",
         "PersonalAccessTokenVariableName": "azdoexacttoken",
         "AccessToken": ""

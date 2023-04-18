@@ -1,0 +1,141 @@
+{
+  "Version": "0.0",
+  "LogLevel": "Information",
+  "workaroundForQuerySOAPBugEnabled": false,
+  "GenerateMigrationComment": false,
+  "Source": {
+    "$type": "TfsTeamProjectConfig",
+    "Collection": "https://dev.azure.com/devopsmkb",
+    "Project": "CloudOps",
+    "ReflectedWorkItemIDFieldName": "Custom.ReflectedWorkItemId",
+    "AllowCrossProjectLinking": false,
+    "AuthenticationMode": "AccessToken",
+    //"PersonalAccessTokenVariableName": "tfstoken",
+    //"PersonalAccessToken": "", //and
+    "PersonalAccessToken": "",
+    "LanguageMaps": {
+      "AreaPath": "Area",
+      "IterationPath": "Iteration"
+    }
+  },
+  "Target": {
+    "$type": "TfsTeamProjectConfig",
+    "Collection": "https://dev.azure.com/ExactGroup/",
+    "Project": "CloudOps",
+    "ReflectedWorkItemIDFieldName": "TempMigrationField",
+    //"ReflectedWorkItemIDFieldName": "Microsoft.VSTS.Build.IntegrationBuild",
+    "AllowCrossProjectLinking": false,
+    "AuthenticationMode": "AccessToken",
+    //"PersonalAccessTokenVariableName": "azdoexacttoken",
+    "PersonalAccessToken": "",
+    "DummyWorkItemForImageUploads": "671290,671292,671293,671294,671296,671298,671299",
+    "DelayBetweenTwoWorkItems": 600,
+    "WhoToEmail": "a.dsouza@devon.nl",
+    "LanguageMaps": {
+      "AreaPath": "Area",
+      "IterationPath": "Iteration"
+    }
+  },
+  "WorkItemTypeDefinition": {
+    "sourceWorkItemTypeName": "targetWorkItemTypeName"
+  },
+  //"GitRepoMapping": { "AccountancyGemak": "eol-fiscaal-jaarrekening" },
+  "GitRepoMapping": null,
+  "FieldMaps": [
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Bug",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "New",
+      "valueMapping": {
+        "Done": "Finished",
+        "Removed": "Removed",
+        "New": "New",
+        "Approved": "Approved"
+      }
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Feature",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "New",
+      "valueMapping": {
+        "Done": "Development Done",
+        "Removed": "Removed",
+        "New": "New",
+        "In Progress": "In Progress"
+      }
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Product Backlog Item",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "New",
+      "valueMapping": {
+        "Done": "Finished",
+        "Removed": "Removed",
+        "New": "New",
+        "Approved": "Sprint ready",
+        "On Hold": "On hold",
+        "Committed": "In Sprint"
+      }
+    },
+    {
+      "$type": "FieldtoFieldMapConfig",
+      "WorkItemTypeName": "Product Backlog Item",
+      "sourceField": "Custom.WBSO",
+      "targetField": "Custom.WBSOWork",
+      "defaultValue": null
+    },
+    {
+      "$type": "FieldValueMapConfig",
+      "WorkItemTypeName": "Task",
+      "sourceField": "System.State",
+      "targetField": "System.State",
+      "defaultValue": "New",
+      "valueMapping": {
+        "Done": "Done",
+        "Removed": "Removed",
+        "To Do": "To Do",
+        "In Progress": "In Progress",
+        "Review": "To Do"
+      }
+    }
+  ],
+  "Processors": [
+    {
+      "$type": "WorkItemMigrationConfig",
+      "ReplayRevisions": false,
+      "PrefixProjectToNodes": false,
+      "UpdateCreatedDate": true,
+      "UpdateCreatedBy": true,
+      "BuildFieldTable": false,
+      "AppendMigrationToolSignatureFooter": false,
+      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Task') AND [System.ChangedDate] < '2022-1-1'",
+      //"WIQLQueryBit": "AND [System.WorkItemType] IN ('Bug','Epic','Test Case') AND [System.ID] > '231320'",
+      //"WIQLQueryBit": "",
+      "WIQLQueryBit": "AND [System.ID] IN ('212421','213279','214217','214218','214220','216356','216715','216716','216992','218531','219106','219108','224623','227448','229158','230990','231319','89699','89705','90131','90136','90145','90152','90159','90163','90168','90176','90197','90204','90226','90233','90239','90284','90308')",
+      //"WIQLQueryBit": "AND [System.ID] IN ('229155')",
+
+      "WIQLOrderBit": "[System.ID]",
+      "Enabled": true,
+      "LinkMigration": true,
+      "AttachmentMigration": true,
+      "AttachmentWorkingPath": "c:\\temp\\WorkItemAttachmentWorkingFolder\\",
+      "FixHtmlAttachmentLinks": true,
+      "SkipToFinalRevisedWorkItemType": true,
+      "WorkItemCreateRetryLimit": 5,
+      "FilterWorkItemsThatAlreadyExistInTarget": false,
+      "PauseAfterEachWorkItem": false,
+      "AttachmentMaxSize": 480000000,
+      "CollapseRevisions": false,
+      "LinkMigrationSaveEachAsAdded": true,
+      "GenerateMigrationComment": false,
+      "NodeStructureEnricherEnabled": false,
+      "NodeBasePaths": []
+    }
+  ]
+}

@@ -424,8 +424,8 @@
         "Repository Change": "Repository Change",
         "Requirements": "Requirements",
         "Stabilization": "Stabilization",
-        "Test case design": "Test case design",
-        "Test case execution": "Test case execution",
+        "Test Design": "Test case design",
+        "Test Execution": "Test case execution",
         "Test case review": "Test case review",
         "Metadata and XML Change": "Development"
       }
