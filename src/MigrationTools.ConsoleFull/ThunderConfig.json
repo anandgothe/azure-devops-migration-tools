@@ -11,7 +11,7 @@
 		"AllowCrossProjectLinking": false,
 		"AuthenticationMode": "AccessToken",
 		"PersonalAccessTokenVariableName": "",
-		"PersonalAccessToken": "qk52pnpdat6aodpcusx4snmdol22ysg3t555engkckr4z45g6vla", //and
+		"PersonalAccessToken": "", //and
 		//"PersonalAccessToken": "",
 		"LanguageMaps": {
 			"AreaPath": "Area",
@@ -27,7 +27,7 @@
 		"AllowCrossProjectLinking": false,
 		"AuthenticationMode": "AccessToken",
 		"PersonalAccessTokenVariableName": "",
-		"PersonalAccessToken": "fvzt3sar7qy4edb43lvecjdr572zn3fwnij2yi3nlgbjepna4yfa",
+		"PersonalAccessToken": "",
 		"DummyWorkItemForImageUploads": "413801,413802,412345,412346,412347,412348,412349,412350,412351,412352,412353,412355,412356,412357,412358",
 		"DelayBetweenTwoWorkItems": 1200,
 		"WhoToEmail": "a.gothe@devon.nl",

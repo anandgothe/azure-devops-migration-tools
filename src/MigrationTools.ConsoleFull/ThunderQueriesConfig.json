@@ -13,7 +13,7 @@
 				"Project": "Thunder",
 				"AuthenticationMode": "AccessToken",
 				"PersonalAccessTokenVariableName": "tfstoken",
-				"AccessToken": "qk52pnpdat6aodpcusx4snmdol22ysg3t555engkckr4z45g6vla"
+				"AccessToken": ""
 			},
 			{
 				"Name": "MyTarget",
@@ -21,7 +21,7 @@
 				"Project": "Exact-Globe-Plus",
 				"AuthenticationMode": "AccessToken",
 				"PersonalAccessTokenVariableName": "azdoexacttoken",
-				"AccessToken": "7u7c24xtrlaryxx5h7pr4ns4cgstmwnae6xgqoyqawbrifptazja"
+				"AccessToken": ""
 			}
 		]
 	},
