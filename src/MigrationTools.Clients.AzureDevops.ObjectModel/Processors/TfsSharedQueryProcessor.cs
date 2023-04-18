@@ -11,6 +11,8 @@ namespace MigrationTools.Processors
     /// <summary>
     /// The TfsSharedQueryProcessor enabled you to migrate queries from one locatio nto another.
     /// </summary>
+    /// <status>Beta</status>
+    /// <processingtarget>Queries</processingtarget>
     public class TfsSharedQueryProcessor : Processor
     {
         private TfsSharedQueryProcessorOptions _options;
@@ -117,8 +119,15 @@ namespace MigrationTools.Processors
             {
                 Log.LogInformation("Migrating a folder '{sourceFolderName}'", sourceFolder.Name);
                 targetFolder = new QueryFolder(sourceFolder.Name);
-                parentFolder.Add(targetFolder);
-                targetHierarchy.Save(); // moved the save here a more immediate and relavent error message
+                try
+                {
+                    parentFolder.Add(targetFolder);
+                    targetHierarchy.Save(); // moved the save here a more immediate and relavent error message
+                }
+                catch(Exception ex)
+                {
+
+                }
             }
 
             // Process child items
@@ -164,6 +173,19 @@ namespace MigrationTools.Processors
                 foreach (var sourceField in _options.SourceToTargetFieldMappings.Keys)
                 {
                     fixedQueryText = fixedQueryText.Replace(sourceField, _options.SourceToTargetFieldMappings[sourceField]);
+                }
+            }
+
+            if (fixedQueryText.Contains("Microsoft.VSTS.Common.Priority") && fixedQueryText.Contains("order by"))
+            {
+                var ordIndex = fixedQueryText.IndexOf("order by");
+                var afterOrd = fixedQueryText.Substring(ordIndex);
+
+                var split = afterOrd.Split(new [] { "Microsoft.VSTS.Common.Priority" },StringSplitOptions.None);
+
+                if (split.Length > 2)
+                {
+                    fixedQueryText = fixedQueryText.Replace(", [Microsoft.VSTS.Common.Priority]", "");
                 }
             }
 

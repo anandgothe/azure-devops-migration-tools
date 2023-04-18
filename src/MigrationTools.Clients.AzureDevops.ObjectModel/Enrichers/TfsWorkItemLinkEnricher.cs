@@ -141,6 +141,16 @@ namespace MigrationTools.Enrichers
                 }
             }
 
+            if (newSteps.Contains("ref=") && newSteps==oldSteps)
+            {
+                Log.LogError($"REPLACING SHAREd STEP FOR {wiSourceL.Id} -> {wiTargetL.Id}");
+                newSteps = newSteps.Replace("ref=\"7982\"", "ref=\"488366\"");
+                newSteps = newSteps.Replace("ref=\"7981\"", "ref=\"488359\"");
+                newSteps = newSteps.Replace("ref=\"14458\"", "ref=\"488378\"");
+                wiTargetL.ToWorkItem().Fields[microsoftVstsTcmSteps].Value = newSteps;
+            }
+
+
             if (wiTargetL.ToWorkItem().IsDirty && _save)
             {
                 wiTargetL.SaveToAzureDevOps();

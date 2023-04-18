@@ -8,6 +8,10 @@
     "AllowCrossProjectLinking": false,
     "AuthenticationMode": "Prompt",
     "PersonalAccessToken": "",
+    "PersonalAccessTokenVariableName": "",
+    "DummyWorkItemForImageUploads": null,
+    "WhoToEmail": null,
+    "DelayBetweenTwoWorkItems": 0,
     "LanguageMaps": {
       "AreaPath": "Area",
       "IterationPath": "Iteration"
@@ -21,6 +25,10 @@
     "AllowCrossProjectLinking": false,
     "AuthenticationMode": "Prompt",
     "PersonalAccessToken": "",
+    "PersonalAccessTokenVariableName": "",
+    "DummyWorkItemForImageUploads": null,
+    "WhoToEmail": null,
+    "DelayBetweenTwoWorkItems": 0,
     "LanguageMaps": {
       "AreaPath": "Area",
       "IterationPath": "Iteration"
@@ -115,6 +123,7 @@
   ],
   "GitRepoMapping": null,
   "LogLevel": "Information",
+  "CommonEnrichersConfig": null,
   "Processors": [
     {
       "$type": "WorkItemMigrationConfig",
@@ -123,7 +132,7 @@
       "PrefixProjectToNodes": false,
       "UpdateCreatedDate": true,
       "UpdateCreatedBy": true,
-      "WIQLQueryBit": "AND  [Microsoft.VSTS.Common.ClosedDate] = '' AND [System.WorkItemType] NOT IN ('Test Suite', 'Test Plan')",
+			"WIQLQueryBit": "AND  [Microsoft.VSTS.Common.ClosedDate] = '' AND [System.WorkItemType] NOT IN ('Test Suite', 'Test Plan','Shared Steps','Shared Parameter','Feedback Request')",
       "WIQLOrderBit": "[System.ChangedDate] desc",
       "LinkMigration": true,
       "AttachmentMigration": true,
@@ -137,13 +146,19 @@
       "AttachRevisionHistory": false,
       "LinkMigrationSaveEachAsAdded": false,
       "GenerateMigrationComment": true,
+      "WorkItemIDs": null,
+      "MaxRevisions": 0,
       "NodeStructureEnricherEnabled": null,
+      "UseCommonNodeStructureEnricherConfig": false,
+      "StopMigrationOnMissingAreaIterationNodes": true,
       "NodeBasePaths": [
         "Product\\Area\\Path1",
         "Product\\Area\\Path2"
       ],
-      "WorkItemIDs": null,
-      "MaxRevisions": 0
+      "AreaMaps": {},
+      "IterationMaps": {},
+      "MaxGracefulFailures": 0,
+      "SkipRevisionWithInvalidIterationPath": false
     },
     {
       "$type": "TestVariablesMigrationConfig",
@@ -158,8 +173,15 @@
       "Enabled": false,
       "PrefixProjectToNodes": false,
       "OnlyElementsWithTag": null,
-      "OnlyElementsUnderAreaPath": null,
       "TestPlanQueryBit": null,
+      "RemoveAllLinks": false,
+      "MigrationDelay": 0,
+      "StartingNumber": 0,
+      "EndingNumber": 0,
+      "UseCommonNodeStructureEnricherConfig": false,
+      "NodeBasePaths": null,
+      "AreaMaps": null,
+      "IterationMaps": null,
       "RemoveInvalidTestSuiteLinks": false,
       "FilterCompleted": false
     },

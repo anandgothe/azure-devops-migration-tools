@@ -129,7 +129,7 @@ namespace VstsSyncMigrator.Engine
                     break;
                 }
 
-                Thread.Sleep(10000);
+                Thread.Sleep(1000);
 
                 if (CanSkipElementBecauseOfTags(sourcePlan.Id))
                 {
@@ -164,16 +164,23 @@ namespace VstsSyncMigrator.Engine
                 return;
             }
 
+            try
+            {
+                _totalTestCases = source.TestCases.Count;
+            }
+            catch(Exception ex)
+            {
+                Log.LogError("Error when getting TestCase Count, retrying after 30...", ex);
+                Thread.Sleep(30000);
+                _totalTestCases = source.TestCases.Count;
+            }
 
-            _totalTestCases = source.TestCases.Count;
             _currentTestCases = 0;
             AddMetric("TestCaseCount", metrics, _totalTestCases);
             InnerLog(source, string.Format("            Suite has {0} test cases", _totalTestCases), 15);
             int index = 0;
             foreach (ITestSuiteEntry sourceTestCaseEntry in source.TestCases)
             {
-                Thread.Sleep(1000);
-
                 _currentTestCases++;
                 InnerLog(source, $"Work item: {sourceTestCaseEntry.Id}", 15);
 
@@ -859,9 +866,15 @@ namespace VstsSyncMigrator.Engine
                 metrics.Add("SubSuites", __totalSuites);
                 foreach (var sourceSuiteChild in sourcePlan.RootSuite.SubSuites)
                 {
-                    Thread.Sleep(4000);
+                    if (__currentSuite < 10)
+                    {
+                       // continue;
+                    }
 
                     __currentSuite++;
+
+                    //Thread.Sleep(1000);
+
                     InnerLog(sourceSuiteChild, $"", 5, true);
 
                     ProcessTestSuite(sourceSuiteChild, targetPlan.RootSuite, targetPlan);

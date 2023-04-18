@@ -49,7 +49,18 @@ namespace MigrationTools._EngineV1.Clients
             try
             {
                 Log.Debug("Query sent");
-                var workItemCollection = wiClient.Store.Query(Query);
+
+                WorkItemCollection workItemCollection = null;
+                try
+                {
+                    workItemCollection = wiClient.Store.Query(Query);
+                }
+                catch (Exception ex)
+                {
+                    Log.Error("Error in GetWorkItemsFromQuery, retrying in 30...", ex);
+                    workItemCollection = wiClient.Store.Query(Query);
+                }
+
                 if (workItemCollection.Count > 0)
                 {
                     Log.Information("{0} Work items received, verifying", workItemCollection.Count);
